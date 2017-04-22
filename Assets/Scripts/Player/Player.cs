@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Player : LivingCreature {
 
-    Planet planet;
+    
     private bool rotationSet = false;
     private void Awake()
     {
@@ -24,29 +24,13 @@ public class Player : LivingCreature {
 	
 	// Update is called once per frame
 	void Update () {
-        if (!DG.getGrounded())
-        {
-            RB.freezeRotation = true;
-        }
-        else
-        {
-            RB.freezeRotation = false;
-        }
-        if (RB.freezeRotation)
-        {
-            print("Rotation frozen");
-        }
-        else
-        {
-            print("Rotation not frozen");
-        }
         Move();
 	}
 
 
     private void FixedUpdate()
     {
-        InduceGravity(planet);
+        InduceGravity();
     }
 
     protected override void Move()
