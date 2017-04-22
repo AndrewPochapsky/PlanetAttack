@@ -4,9 +4,13 @@ using UnityEngine;
 
 public class LivingCreature : MonoBehaviour {
 
-    protected int Health { get; set; }
+    protected int CurrentHealth { get; set; }
+    protected int MaxHealth { get; set; }
     protected float Speed { get; set; }
     protected float JumpStrength { get; set; }
+    protected int Level { get; set; }
+    protected int CurrentXP { get; set; }
+    protected int RequiredXP { get; set; }
 
     protected DetectGround DG;
     protected Rigidbody2D RB { get; set; }
@@ -16,7 +20,7 @@ public class LivingCreature : MonoBehaviour {
     
     protected virtual void Update()
     {
-        if (Health <= 0)
+        if (CurrentHealth <= 0)
         {
             Die();
         }
@@ -57,9 +61,53 @@ public class LivingCreature : MonoBehaviour {
     }
     public virtual void RecieveDamage(int damage)
     {
-        Health -= damage;
+        CurrentHealth -= damage;
+    }
+    protected void LevelUp()
+    {
+        //in case of overflow exp
+        CurrentXP -= RequiredXP;
+        RequiredXP = 100 + (50 * (Level - 1));
+        Level++;
+    }
+
+    protected bool CanLevelUp()
+    {
+        if(CurrentXP >= RequiredXP)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
    
+    public int GetCurrentHealth()
+    {
+        return CurrentHealth;
+    }
+    public int GetMaxHealth()
+    {
+        return MaxHealth;
+    }
+
+    public int GetCurrentXP()
+    {
+        return CurrentXP;
+    }
+    public void AddXP(int xp)
+    {
+        CurrentXP += xp;
+    }
+    public int GetRequiredXP()
+    {
+        return RequiredXP;
+    }
+    public int GetLevel()
+    {
+        return Level;
+    }
 
 
 
