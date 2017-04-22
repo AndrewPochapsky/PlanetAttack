@@ -12,6 +12,20 @@ public class LivingCreature : MonoBehaviour {
     protected Rigidbody2D RB { get; set; }
 
     protected Planet planet { get; set; }
+    protected int Damage { get; set; }
+    
+    protected virtual void Update()
+    {
+        if (Health <= 0)
+        {
+            Die();
+        }
+    }
+
+    private void Start()
+    {
+       
+    }
 
     protected virtual void Die()
     {
@@ -25,9 +39,9 @@ public class LivingCreature : MonoBehaviour {
 
     protected void InduceGravity()
     {
-        Vector2 directionToPlanet = planet.transform.position - transform.position;
+        Vector3 directionToPlanet = planet.transform.position - transform.position;
         directionToPlanet.Normalize();
-        Vector2 gravityAcc = directionToPlanet * planet.GetGravity();
+        Vector3 gravityAcc = directionToPlanet * planet.GetGravity();
 
         RB.AddForce(gravityAcc, ForceMode2D.Force);
 
@@ -41,6 +55,11 @@ public class LivingCreature : MonoBehaviour {
             RB.AddForce(Vector2.up * JumpStrength, ForceMode2D.Impulse);
         }
     }
+    public virtual void RecieveDamage(int damage)
+    {
+        Health -= damage;
+    }
+   
 
 
 

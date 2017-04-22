@@ -19,15 +19,23 @@ public class Enemy : LivingCreature {
         //print(waypoints.Count);
 	}
 	
-	// Update is called once per frame
-	void Update () {
-        print("yes");
-	}
+	
+	
 
-    protected void Attack()
+    private void OnCollisionStay2D(Collision2D collision)
     {
-
+        Player player = collision.gameObject.GetComponent<Player>();
+        if (player)
+        {
+            if (!player.IsInvulnerable())
+            {
+                print("dealing " + Damage + " damage");
+                player.RecieveDamage(Damage);
+            }
+           
+        }
     }
+
 
     protected override void Move()
     {
@@ -89,8 +97,8 @@ public class Enemy : LivingCreature {
            
         }
 
-        print("First closest "+closestWaypoint.ToString());
-        print("Second closest"+ secondClosestWaypoint.ToString());
+        //print("First closest "+closestWaypoint.ToString());
+        //print("Second closest"+ secondClosestWaypoint.ToString());
         if (closestWaypoint != null)
         {
             float firstDistance = Vector2.Distance(closestWaypoint.position, player.transform.position);
@@ -110,8 +118,9 @@ public class Enemy : LivingCreature {
         }
        
 
-       
+    
     }
+   
 
 
 }

@@ -24,5 +24,6 @@ public class CameraArm : MonoBehaviour {
 
         //transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, z);
         transform.rotation = Quaternion.Lerp(transform.rotation,player.transform.rotation, Time.time * 0.5f);
+      
 	}
 }

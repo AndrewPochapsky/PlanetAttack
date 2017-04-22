@@ -9,6 +9,8 @@ public class Slime : Enemy {
         Health = 5;
         Speed = 2;
         JumpStrength = 2f;
+        Damage = 2;
+
 
         DG = transform.GetChild(0).GetComponent<DetectGround>();
         RB = GetComponent<Rigidbody2D>();
@@ -26,8 +28,8 @@ public class Slime : Enemy {
     }
 	
 	// Update is called once per frame
-	void Update () {
-
+	protected override void Update () {
+        base.Update();
         Move();
         //Jump();
 	}
