@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Player : LivingCreature {
 
-    Planet planet;
+    
     private bool rotationSet = false;
     private void Awake()
     {
@@ -46,7 +46,7 @@ public class Player : LivingCreature {
 
     private void FixedUpdate()
     {
-        InduceGravity(planet);
+        InduceGravity();
     }
 
     protected override void Move()

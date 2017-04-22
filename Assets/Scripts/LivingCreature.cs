@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-[RequireComponent(typeof (DetectGround))]
+
 public class LivingCreature : MonoBehaviour {
 
     protected int Health { get; set; }
@@ -10,6 +10,8 @@ public class LivingCreature : MonoBehaviour {
 
     protected DetectGround DG;
     protected Rigidbody2D RB { get; set; }
+
+    protected Planet planet { get; set; }
 
     protected virtual void Die()
     {
@@ -21,7 +23,7 @@ public class LivingCreature : MonoBehaviour {
 
     }
 
-    protected void InduceGravity(Planet planet)
+    protected void InduceGravity()
     {
         Vector2 directionToPlanet = planet.transform.position - transform.position;
         directionToPlanet.Normalize();
@@ -31,6 +33,15 @@ public class LivingCreature : MonoBehaviour {
 
 
     }
+
+    protected void Jump()
+    {
+        if (DG.getGrounded())
+        {
+            RB.AddForce(Vector2.up * JumpStrength, ForceMode2D.Impulse);
+        }
+    }
+
 
 
 
