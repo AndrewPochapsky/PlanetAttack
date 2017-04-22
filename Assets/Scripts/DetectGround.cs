@@ -20,7 +20,7 @@ public class DetectGround : MonoBehaviour {
     {   
         if (collision.GetComponent<Planet>())
         {
-            print("in air");
+
             isGrounded = false;
         }
         

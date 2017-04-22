@@ -7,7 +7,7 @@ public class Slime : Enemy {
     private void Awake()
     {
         Health = 5;
-        Speed = 5;
+        Speed = 2;
         JumpStrength = 2f;
 
         DG = transform.GetChild(0).GetComponent<DetectGround>();
@@ -27,13 +27,14 @@ public class Slime : Enemy {
 	
 	// Update is called once per frame
 	void Update () {
+
         Move();
-        
         //Jump();
 	}
 
     private void FixedUpdate()
     {
+        
         InduceGravity();
     }
 
