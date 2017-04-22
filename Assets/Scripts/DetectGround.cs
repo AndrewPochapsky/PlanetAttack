@@ -9,7 +9,7 @@ public class DetectGround : MonoBehaviour {
     {
         if (collision.GetComponent<Planet>())
         {
-            print("colliding with planet");
+
             isGrounded = true;
         }
        

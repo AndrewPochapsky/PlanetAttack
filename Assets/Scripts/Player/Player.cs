@@ -24,22 +24,6 @@ public class Player : LivingCreature {
 	
 	// Update is called once per frame
 	void Update () {
-        if (!DG.getGrounded())
-        {
-            RB.freezeRotation = true;
-        }
-        else
-        {
-            RB.freezeRotation = false;
-        }
-        if (RB.freezeRotation)
-        {
-            print("Rotation frozen");
-        }
-        else
-        {
-            print("Rotation not frozen");
-        }
         Move();
 	}
 

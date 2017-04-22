@@ -12,13 +12,17 @@ public class Slime : Enemy {
 
         DG = transform.GetChild(0).GetComponent<DetectGround>();
         RB = GetComponent<Rigidbody2D>();
+
+        planet = GameObject.FindObjectOfType<Planet>();
+        player = GameObject.FindObjectOfType<Player>();
+
     }
 
 
     // Use this for initialization
-    void Start () {
-        planet = GameObject.FindObjectOfType<Planet>();
-        player = GameObject.FindObjectOfType<Player>();
+    protected override void Start () {
+        base.Start();
+       
     }
 	
 	// Update is called once per frame
@@ -32,4 +36,8 @@ public class Slime : Enemy {
     {
         InduceGravity();
     }
+
+
+     
+
 }
