@@ -24,6 +24,10 @@ public class LivingCreature : MonoBehaviour {
         {
             Die();
         }
+        if (CanLevelUp())
+        {
+            LevelUp();
+        }
     }
 
     private void Start()
@@ -69,6 +73,7 @@ public class LivingCreature : MonoBehaviour {
         CurrentXP -= RequiredXP;
         Level++;
         RequiredXP = 100 + (50 * (Level - 1));
+        CurrentHealth = MaxHealth;
     }
 
     protected bool CanLevelUp()
