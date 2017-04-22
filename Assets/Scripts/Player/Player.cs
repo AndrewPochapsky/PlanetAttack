@@ -127,5 +127,18 @@ public class Player : LivingCreature {
         return invulnerable;
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        Collectible collectible = collision.GetComponent<Collectible>();
+        if (collectible)
+        {
+            if(collectible is XPOrb)
+            {
+                AddXP(collectible.GetValue());
+                Destroy(collectible.gameObject);
+            }
+            //... more conditions such as health pack
+        }
+    }
 
 }

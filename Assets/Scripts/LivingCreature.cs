@@ -67,8 +67,8 @@ public class LivingCreature : MonoBehaviour {
     {
         //in case of overflow exp
         CurrentXP -= RequiredXP;
-        RequiredXP = 100 + (50 * (Level - 1));
         Level++;
+        RequiredXP = 100 + (50 * (Level - 1));
     }
 
     protected bool CanLevelUp()
