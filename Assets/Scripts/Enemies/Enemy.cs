@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Enemy : LivingCreature {
     protected Player player { get; set; }
-
+    protected int NumOfXPOrbs { get; set; }
     protected List<Transform> waypoints;
 
 	// Use this for initialization
@@ -120,7 +120,17 @@ public class Enemy : LivingCreature {
 
     
     }
-   
+    protected override void Die()
+    {
+        
+        for (int i = 0; i < NumOfXPOrbs; i++)
+        {
+            Vector3 offset = new Vector3(Random.Range(0, 2), Random.Range(0, 2), 0);
+            Instantiate(Resources.Load("Collectibles/XPOrbContainer"), transform.position+ offset, transform.rotation);
+        }
+        base.Die();
+    }
+
 
 
 }

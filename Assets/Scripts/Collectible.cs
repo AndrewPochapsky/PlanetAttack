@@ -11,4 +11,18 @@ public class Collectible : MonoBehaviour {
         return Value;
     }
 
+    public void Destroy()
+    {
+        if (transform.parent != null)
+        {
+            Transform parent = transform.parent;
+            Destroy(parent.gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+        
+    }
+
 }

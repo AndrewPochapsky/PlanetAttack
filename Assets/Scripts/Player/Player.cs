@@ -135,8 +135,10 @@ public class Player : LivingCreature {
             if(collectible is XPOrb)
             {
                 AddXP(collectible.GetValue());
-                Destroy(collectible.gameObject);
+               
             }
+            collectible.Destroy();
+            //Destroy(collectible.gameObject);
             //... more conditions such as health pack
         }
     }

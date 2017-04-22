@@ -11,6 +11,7 @@ public class Slime : Enemy {
         Speed = 2;
         JumpStrength = 2f;
         Damage = 2;
+        NumOfXPOrbs = Random.Range(1, 3);
 
 
         DG = transform.GetChild(0).GetComponent<DetectGround>();
