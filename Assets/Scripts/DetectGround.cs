@@ -9,12 +9,23 @@ public class DetectGround : MonoBehaviour {
     {
         if (collision.GetComponent<Planet>())
         {
+            print("colliding with planet");
             isGrounded = true;
         }
-        else
+       
+      
+    }
+    
+    private void OnTriggerExit2D(Collider2D collision)
+    {   
+        if (collision.GetComponent<Planet>())
         {
+            print("in air");
             isGrounded = false;
         }
+        
+       
+
     }
 
     public bool getGrounded()

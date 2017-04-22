@@ -6,11 +6,10 @@ public class Player : LivingCreature {
 
     Planet planet;
     private bool rotationSet = false;
-    private static Quaternion roundedRotation;
     private void Awake()
     {
         Speed = 5;
-        JumpStrength = 10;
+        JumpStrength = 15;
         RB = GetComponent<Rigidbody2D>();
         DG = transform.GetChild(0).GetComponent<DetectGround>();
         //Physics2D.gravity = Vector2.zero;
@@ -25,13 +24,25 @@ public class Player : LivingCreature {
 	
 	// Update is called once per frame
 	void Update () {
+        if (!DG.getGrounded())
+        {
+            RB.freezeRotation = true;
+        }
+        else
+        {
+            RB.freezeRotation = false;
+        }
+        if (RB.freezeRotation)
+        {
+            print("Rotation frozen");
+        }
+        else
+        {
+            print("Rotation not frozen");
+        }
         Move();
 	}
 
-    public static Quaternion GetRoundedRotation()
-    {
-        return roundedRotation;
-    }
 
     private void FixedUpdate()
     {
@@ -42,13 +53,14 @@ public class Player : LivingCreature {
     {
         if (Input.anyKey)
         {
+
             if (Input.GetKey(KeyCode.A))
             {
                 //RB.MovePosition(Vector2.left * Speed * Time.deltaTime);
                 //RB.MovePosition(RB.position + (Vector2.left * Speed * Time.deltaTime));
 
                 transform.Translate(Vector2.left * Speed * Time.deltaTime);
-
+                RB.freezeRotation = false;
             }
             if (Input.GetKey(KeyCode.D))
             {
@@ -56,17 +68,22 @@ public class Player : LivingCreature {
 
                 //RB.MovePosition(Vector2.right * Speed * Time.deltaTime);
                 transform.Translate(Vector2.right * Speed * Time.deltaTime);
+                RB.freezeRotation = false;
             }
-
+            /*
             if (Input.GetKeyDown(KeyCode.W) && DG.getGrounded())
             {
+               
                 RB.AddForce(Vector2.up * JumpStrength, ForceMode2D.Impulse);
+                
+                //RB.velocity = new Vector3(0, JumpStrength, 0);
             }
+            else
+            {
+                //RB.freezeRotation = false;
+            }*/
         }
-        else
-        {
-
-        }
+       
         
 
     }
