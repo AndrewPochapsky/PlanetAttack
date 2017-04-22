@@ -1,23 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+[RequireComponent(typeof (DetectGround))]
 public class LivingCreature : MonoBehaviour {
 
-    public int Health { get; set; }
-    public float Speed { get; set; }
-    public Rigidbody2D RB { get; set; }
+    protected int Health { get; set; }
+    protected float Speed { get; set; }
+    protected float JumpStrength { get; set; }
 
-
-    // Use this for initialization
-    void Start () {
-        RB = GetComponent<Rigidbody2D>();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    protected DetectGround DG;
+    protected Rigidbody2D RB { get; set; }
 
     protected virtual void Die()
     {
@@ -28,6 +20,18 @@ public class LivingCreature : MonoBehaviour {
     {
 
     }
+
+    protected void InduceGravity(Planet planet)
+    {
+        Vector2 directionToPlanet = planet.transform.position - transform.position;
+        directionToPlanet.Normalize();
+        Vector2 gravityAcc = directionToPlanet * planet.GetGravity();
+
+        RB.AddForce(gravityAcc, ForceMode2D.Force);
+
+
+    }
+
 
 
 }
