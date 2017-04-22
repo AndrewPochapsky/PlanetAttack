@@ -6,10 +6,12 @@ public class Slime : Enemy {
 
     private void Awake()
     {
-        Health = 5;
+        CurrentHealth = 5;
+        MaxHealth = CurrentHealth;
         Speed = 2;
         JumpStrength = 2f;
         Damage = 2;
+        NumOfXPOrbs = Random.Range(1, 3);
 
 
         DG = transform.GetChild(0).GetComponent<DetectGround>();

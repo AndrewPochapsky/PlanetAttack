@@ -18,7 +18,11 @@ public class Player : LivingCreature {
 
     private void Awake()
     {
-        Health = 10;
+        Level = 1;
+        CurrentXP = 0;
+        RequiredXP = 100 + (50 * (Level - 1));
+        CurrentHealth = 10;
+        MaxHealth = CurrentHealth;
         Speed = 5;
         JumpStrength = 15;
         RB = GetComponent<Rigidbody2D>();
@@ -39,7 +43,7 @@ public class Player : LivingCreature {
 	// Update is called once per frame
 	protected override void Update () {
         base.Update();
-        print("Current Health: " + Health);
+        
         //weapon.transform.rotation = Quaternion.Euler(transform.rotation.x, rotation, transform.rotation.z);
         //SetZRotation(hand);
         //hand.transform.rotation = transform.rotation;
@@ -123,5 +127,20 @@ public class Player : LivingCreature {
         return invulnerable;
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        Collectible collectible = collision.GetComponent<Collectible>();
+        if (collectible)
+        {
+            if(collectible is XPOrb)
+            {
+                AddXP(collectible.GetValue());
+               
+            }
+            collectible.Destroy();
+            //Destroy(collectible.gameObject);
+            //... more conditions such as health pack
+        }
+    }
 
 }
