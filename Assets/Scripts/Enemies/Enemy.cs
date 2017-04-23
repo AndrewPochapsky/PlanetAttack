@@ -10,10 +10,19 @@ public class Enemy : LivingCreature {
 
     private Text levelText;
     private Canvas canvas;
-    
 
-	// Use this for initialization
-	protected virtual void Start () {
+    private int count = 0;
+
+    Transform nearestWaypoint;
+    Vector2 moveDirection;
+
+    private void Awake()
+    {
+       
+    }
+
+    // Use this for initialization
+    protected virtual void Start () {
         CurrentXP = DifficultyController.GetCurrentXP();
 
         canvas = transform.GetChild(1).GetComponent<Canvas>();
@@ -29,12 +38,18 @@ public class Enemy : LivingCreature {
         }
         //print(waypoints.Count);
         InvokeRepeating("IncrementXP", 0, 1);
-	}
+        
+        nearestWaypoint = closestWaypoint();
+        print(nearestWaypoint.ToString());
+        moveDirection = ChooseMoveDirection();
+    }
 	
     protected override void Update()
     {
+        transform.Translate(moveDirection* Speed * Time.deltaTime);
+
         levelText.text = Level.ToString();
-        print("Enemy xp: " + CurrentXP);
+        //print("Enemy xp: " + CurrentXP);
         
         //IncrementXP();
         base.Update();
@@ -58,19 +73,74 @@ public class Enemy : LivingCreature {
     }
 
 
-    protected override void Move()
+    private Vector2 ChooseMoveDirection()
     {
-        //Transform test  = closestWaypoint();
-        //transform.position = closestWaypoint().position;
-        
-        if (closestWaypoint() != null && DG.getGrounded())
-            transform.position = Vector3.MoveTowards(transform.position, closestWaypoint().position, Speed * Time.deltaTime);
-        if (Mathf.Round(transform.position.x) == Mathf.Round(closestWaypoint().position.x))
-        {
-            print("reached destination");
-            transform.position = Vector3.MoveTowards(transform.position, closestWaypoint().position, Speed * Time.deltaTime);
 
+        //Depending on which quadrant the enemy is on: dependent on y coord
+        //will decide whether or not the enemy should continue going left or right
+        //after x amount of waypoints, probably 1 or at most 2
+        /*
+        Vector3 startingTransform = transform.position;
+        //print(startingTransform);
+        if (closestWaypoint() != null && DG.getGrounded())
+        {
+            transform.position = Vector3.MoveTowards(transform.position, closestWaypoint().position, Speed * Time.deltaTime);
+            
         }
+            
+        
+        if (Mathf.Round(transform.position.x) == Mathf.Round(closestWaypoint().position.x))
+        {/*
+            count++;
+            if (count == 1)
+            {
+                print("HAPPENING");
+                if(startingTransform.x < transform.position.x && startingTransform.y < -6.57f)
+                {
+                    transform.Translate(Vector2.left * Speed * Time.deltaTime);
+                }
+            }
+            else
+            {
+                transform.position = Vector3.MoveTowards(transform.position, closestWaypoint().position, Speed * Time.deltaTime);
+            }*/
+        print("reached destination");
+        if (transform.position.x < nearestWaypoint.position.x && transform.position.y < 0f)//
+        {
+            print("1");
+            //transform.Translate(Vector2.left * Speed * Time.deltaTime);
+            return Vector2.left;
+            
+        }
+        
+        else if (transform.position.x < nearestWaypoint.position.x && transform.position.y > 0)
+        {
+            print("2");
+            //transform.Translate(Vector2.right * Speed * Time.deltaTime);
+            return Vector2.right;
+        }
+       
+
+        else if (transform.position.x > nearestWaypoint.position.x && transform.position.y > 0f)
+        {
+            print("3");
+            //transform.Translate(Vector2.left * Speed * Time.deltaTime);
+            return Vector2.left;
+            
+        }
+       
+        else if (transform.position.x > nearestWaypoint.position.x && transform.position.y < 0)//
+        {
+            print("4");
+            //transform.Translate(Vector2.right * Speed * Time.deltaTime);
+            return Vector2.right;
+        }
+        
+        print("rip");
+        return Vector2.zero;
+
+
+
 
     }
 

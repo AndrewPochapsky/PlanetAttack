@@ -9,26 +9,33 @@ public class SpawnCamp : MonoBehaviour {
     private int amountToSpawn;
     [SerializeField][Tooltip("Spawn ever x amount of seconds")]
     private float spawnSpeed;
+    private float timeBetweenSpawns = 6;
 	// Use this for initialization
 	void Start () {
         StartCoroutine(SpawnEnemies());
+        //InvokeRepeating("SpawnEnemies", 0, 10);
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		
+        
 	}
 
     private IEnumerator SpawnEnemies()
     {
         int randomEnemyIndex = Random.Range(0, enemyTypes.Length);
         Enemy enemyToSpawn = enemyTypes[randomEnemyIndex];
+
         for (int i = 0; i < amountToSpawn; i++)
         {
-            yield return new WaitForSeconds(spawnSpeed);
+            
             Instantiate(enemyToSpawn, transform.position, transform.rotation);
+            yield return new WaitForSeconds(spawnSpeed);
         }
         print("SPAWNING");
+        yield return new WaitForSeconds(timeBetweenSpawns);
+        StartCoroutine(SpawnEnemies());
     }
 
+    
 }
