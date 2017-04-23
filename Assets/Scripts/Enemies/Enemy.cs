@@ -70,7 +70,7 @@ public class Enemy : LivingCreature {
     private void OnCollisionStay2D(Collision2D collision)
     {
         Player player = collision.gameObject.GetComponent<Player>();
-        if (player)
+        if (player && !collision.gameObject.GetComponent<Weapon>())
         {
             if (!player.IsInvulnerable())
             {

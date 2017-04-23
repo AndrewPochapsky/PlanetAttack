@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Player : LivingCreature {
 
+    private LevelManager levelManager;
+
     private Attack lastAttackUsed;
     private Vector3 RotationVector;
     private bool rotationSet = false;
@@ -21,7 +23,7 @@ public class Player : LivingCreature {
         Level = 1;
         CurrentXP = 0;
         RequiredXP = 100 + (50 * (Level - 1));
-        CurrentHealth = 10;
+        CurrentHealth = 1000;
         MaxHealth = CurrentHealth;
         Speed = 5;
         JumpStrength = 15;
@@ -36,6 +38,7 @@ public class Player : LivingCreature {
     void Start () {
         planet = GameObject.FindObjectOfType<Planet>();
         RotationVector = hand.rotation.eulerAngles;
+        levelManager = GameObject.FindObjectOfType<LevelManager>();
 
 
     }
@@ -142,5 +145,10 @@ public class Player : LivingCreature {
             //... more conditions such as health pack
         }
     }
-
+    protected override void Die()
+    {
+        DifficultyController.SetSurvivedTime(Time.timeSinceLevelLoad.ToString("F2"));
+        levelManager.LoadLevel("02End");
+        base.Die();
+    }
 }

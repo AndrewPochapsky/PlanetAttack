@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class DifficultyController : MonoBehaviour {
 
+    private bool isSet = false;
+
+    private static string survivedTime;
+
     private static int currentXP;
     private static int xpRate = 2;
 	// Use this for initialization
@@ -13,6 +17,7 @@ public class DifficultyController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+       
         //IncrementXP();
 	}
 
@@ -24,6 +29,16 @@ public class DifficultyController : MonoBehaviour {
     public static int GetRate()
     {
         return xpRate;
+    }
+
+    public static string GetSurvivedTime()
+    {
+        return survivedTime;
+    }
+
+    public static void SetSurvivedTime(string time)
+    {
+        survivedTime = time;
     }
 
     public static void AddXP(int xp)

@@ -18,10 +18,16 @@ public class Weapon : MonoBehaviour {
         player = GameObject.FindObjectOfType<Player>();
         anim = GetComponent<Animator>();
 	}
-	
-	
 
-    public void OnTriggerEnter2D(Collider2D col)
+    private void Update()
+    {
+        if (GetComponent<Player>())
+        {
+            print("weapon has player");
+        }
+    }
+
+    public void OnCollisionEnter2D(Collision2D col)
     {
         //for some reason this reads col as player so i need to go down and find the weapon through this
         //child thing
