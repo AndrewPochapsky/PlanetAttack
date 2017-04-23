@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Planet : MonoBehaviour {
-
-    float gravity = 100;
+    [SerializeField]
+    float gravity = 150;
 
 	// Use this for initialization
 	void Start () {

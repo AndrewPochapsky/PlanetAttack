@@ -42,4 +42,9 @@ public class Attack {
         Name = name;
     }
 
+    public void IncreaseAttackDamage(int x)
+    {
+        Damage += x;
+    }
+
 }

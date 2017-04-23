@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class Player : LivingCreature {
 
-    public AudioClip xpOrbClip;
+    private PlayerUIController controller;
+
+    public AudioClip levelUpClip;
     private AudioSource audioSource;
 
     private LevelManager levelManager;
@@ -25,8 +27,8 @@ public class Player : LivingCreature {
     {
         Level = 1;
         CurrentXP = 0;
-        RequiredXP = 100 + (50 * (Level - 1));
-        CurrentHealth = 20;
+        RequiredXP = 100 + (25 * (Level - 1));
+        CurrentHealth = 12;
         MaxHealth = CurrentHealth;
         Speed = 5;
         JumpStrength = 15;
@@ -43,7 +45,7 @@ public class Player : LivingCreature {
         RotationVector = hand.rotation.eulerAngles;
         levelManager = GameObject.FindObjectOfType<LevelManager>();
         audioSource = GetComponent<AudioSource>();
-
+        controller = GameObject.FindObjectOfType<PlayerUIController>();
 
     }
 	
@@ -102,21 +104,6 @@ public class Player : LivingCreature {
         lastAttackUsed = attack;
     }
 
-    protected void SetRotation(float rotation, Transform target)
-    {
-        print("setting rotation");
-        RotationVector.y = rotation;
-        
-
-        //target.eulerAngles = new Vector3(0, rotation, transform.rotation.z); 
-
-    }
-    protected void SetZRotation(Transform target)
-    {
-        RotationVector.z = transform.rotation.z;
-        target.rotation = Quaternion.Euler(RotationVector);
-    }
-
     public override void RecieveDamage(int damage)
     {
         base.RecieveDamage(damage);
@@ -141,8 +128,8 @@ public class Player : LivingCreature {
         {
             if(collectible is XPOrb)
             {
-                audioSource.clip = xpOrbClip;
-                audioSource.Play();
+                //audioSource.clip = xpOrbClip;
+                //audioSource.Play();
                 AddXP(collectible.GetValue());
                
             }
@@ -156,5 +143,28 @@ public class Player : LivingCreature {
         DifficultyController.SetSurvivedTime(Time.timeSinceLevelLoad.ToString("F2"));
         levelManager.LoadLevel("02End");
         base.Die();
+    }
+    protected override void LevelUp()
+    {
+        base.LevelUp();
+        audioSource.clip = levelUpClip;
+        audioSource.Play();
+        StartCoroutine(controller.DisplayLevelUpText());
+
+    }
+
+    protected override void SetStats()
+    {
+        RequiredXP = 100 + (25 * (Level - 1));
+        MaxHealth = 12 + (3 * (Level - 1));
+        Speed = 5 + (0.75f * (Level - 1));
+        Damage = 2 + (1 * (Level - 1));
+        weapon.Attacks[0].SetDamage(weapon.Attacks[0].GetDamage() + (1 * (Level - 1)));
+        CurrentHealth = MaxHealth;
+    }
+
+    public void SetInvulnerable(bool value)
+    {
+        invulnerable = value;
     }
 }

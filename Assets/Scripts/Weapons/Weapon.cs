@@ -27,7 +27,7 @@ public class Weapon : MonoBehaviour {
         }
     }
 
-    public void OnCollisionEnter2D(Collision2D col)
+    public void OnTriggerEnter2D(Collider2D col)
     {
         //for some reason this reads col as player so i need to go down and find the weapon through this
         //child thing
@@ -38,7 +38,9 @@ public class Weapon : MonoBehaviour {
             Vector3 enemyPos = target.transform.position;
             if (target.GetComponent<Enemy>())
             {
-                print("taking damage");
+                player.SetInvulnerable(true);
+                print(target.ToString()+ " taking damage");
+                
                 target.RecieveDamage(player.GetLastAttack().GetDamage());
                 //prevent enemy from stopping when no knockback
                 if (player.GetLastAttack().GetKnockBack() > 0)
@@ -46,11 +48,8 @@ public class Weapon : MonoBehaviour {
                     KnockBack(target);
                 }
             }
-
-
-
-
         }
+        player.SetInvulnerable(false);
     }
 
     private void KnockBack(LivingCreature lc)

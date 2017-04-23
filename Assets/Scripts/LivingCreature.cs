@@ -72,8 +72,7 @@ public class LivingCreature : MonoBehaviour {
         //in case of overflow exp
         CurrentXP -= RequiredXP;
         Level++;
-        RequiredXP = 100 + (50 * (Level - 1));
-        CurrentHealth = MaxHealth;
+        SetStats();
     }
 
     protected bool CanLevelUp()
@@ -112,6 +111,16 @@ public class LivingCreature : MonoBehaviour {
     public int GetLevel()
     {
         return Level;
+    }
+    protected virtual void SetStats()
+    {
+        RequiredXP = 50 + (10 * (Level - 1));
+        MaxHealth = 5 + (3 * (Level - 1));
+        Speed = 2 + (0.5f * (Level - 1));
+        Damage = 2 + (2 * (Level - 1));
+
+        CurrentHealth = MaxHealth;
+
     }
 
 

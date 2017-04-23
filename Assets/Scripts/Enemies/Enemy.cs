@@ -31,12 +31,8 @@ public class Enemy : LivingCreature {
     protected virtual void Start () {
         CurrentXP = DifficultyController.GetCurrentXP();
 
-        canvas = transform.GetChild(1).GetComponent<Canvas>();
+        canvas = transform.GetChild(0).GetComponent<Canvas>();
         levelText = canvas.transform.GetChild(0).GetComponent<Text>();
-
-        
-
-
 
         waypoints = new List<Transform>();
         GameObject[] wayPointObjects= GameObject.FindGameObjectsWithTag("Waypoint");
@@ -49,7 +45,7 @@ public class Enemy : LivingCreature {
         InvokeRepeating("IncrementXP", 0, 1);
         
         nearestWaypoint = closestWaypoint();
-        print(nearestWaypoint.ToString());
+        //print(nearestWaypoint.ToString());
         moveDirection = ChooseMoveDirection();
     }
 	
@@ -69,12 +65,12 @@ public class Enemy : LivingCreature {
 
     private void OnCollisionStay2D(Collision2D collision)
     {
-        Player player = collision.gameObject.GetComponent<Player>();
-        if (player && !collision.gameObject.GetComponent<Weapon>())
+       
+        if (collision.gameObject.tag=="Player" && collision.gameObject.tag!="Weapon")
         {
             if (!player.IsInvulnerable())
             {
-                print("dealing " + Damage + " damage");
+                print(collision.gameObject.ToString() + " taking damage");
                 player.RecieveDamage(Damage);
             }
            
