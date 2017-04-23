@@ -1,14 +1,43 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Enemy : LivingCreature {
     protected Player player { get; set; }
     protected int NumOfXPOrbs { get; set; }
     protected List<Transform> waypoints;
 
-	// Use this for initialization
-	protected virtual void Start () {
+
+
+    protected float HealthModifier { get; set; }
+    protected float DamageModifier { get; set; }
+    protected float SpeedModifier { get; set; }
+
+    private Text levelText;
+    private Canvas canvas;
+
+    private int count = 0;
+
+    Transform nearestWaypoint;
+    Vector2 moveDirection;
+
+    private void Awake()
+    {
+       
+    }
+
+    // Use this for initialization
+    protected virtual void Start () {
+        CurrentXP = DifficultyController.GetCurrentXP();
+
+        canvas = transform.GetChild(1).GetComponent<Canvas>();
+        levelText = canvas.transform.GetChild(0).GetComponent<Text>();
+
+        
+
+
+
         waypoints = new List<Transform>();
         GameObject[] wayPointObjects= GameObject.FindGameObjectsWithTag("Waypoint");
         foreach(GameObject obj in wayPointObjects)
@@ -17,8 +46,24 @@ public class Enemy : LivingCreature {
             waypoints.Add(wp);
         }
         //print(waypoints.Count);
-	}
+        InvokeRepeating("IncrementXP", 0, 1);
+        
+        nearestWaypoint = closestWaypoint();
+        print(nearestWaypoint.ToString());
+        moveDirection = ChooseMoveDirection();
+    }
 	
+    protected override void Update()
+    {
+        transform.Translate(moveDirection* Speed * Time.deltaTime);
+
+        levelText.text = Level.ToString();
+        //print("Enemy xp: " + CurrentXP);
+        
+        //IncrementXP();
+        base.Update();
+        
+    }
 	
 	
 
@@ -36,20 +81,47 @@ public class Enemy : LivingCreature {
         }
     }
 
-
-    protected override void Move()
+    //TODO make more acurrate
+    private Vector2 ChooseMoveDirection()
     {
-        //Transform test  = closestWaypoint();
-        //transform.position = closestWaypoint().position;
-        
-        if (closestWaypoint() != null && DG.getGrounded())
-            transform.position = Vector3.MoveTowards(transform.position, closestWaypoint().position, Speed * Time.deltaTime);
-        if (Mathf.Round(transform.position.x) == Mathf.Round(closestWaypoint().position.x))
-        {
-            print("reached destination");
-            transform.position = Vector3.MoveTowards(transform.position, closestWaypoint().position, Speed * Time.deltaTime);
 
+        print("reached destination");
+        if (transform.position.x < nearestWaypoint.position.x && transform.position.y < 0f)//
+        {
+            print("1");
+            //transform.Translate(Vector2.left * Speed * Time.deltaTime);
+            return Vector2.left;
+            
         }
+        
+        else if (transform.position.x < nearestWaypoint.position.x && transform.position.y > 0)
+        {
+            print("2");
+            //transform.Translate(Vector2.right * Speed * Time.deltaTime);
+            return Vector2.right;
+        }
+       
+
+        else if (transform.position.x > nearestWaypoint.position.x && transform.position.y > 0f)
+        {
+            print("3");
+            //transform.Translate(Vector2.left * Speed * Time.deltaTime);
+            return Vector2.left;
+            
+        }
+       
+        else if (transform.position.x > nearestWaypoint.position.x && transform.position.y < 0)//
+        {
+            print("4");
+            //transform.Translate(Vector2.right * Speed * Time.deltaTime);
+            return Vector2.right;
+        }
+        
+        print("rip");
+        return Vector2.zero;
+
+
+
 
     }
 
@@ -131,6 +203,10 @@ public class Enemy : LivingCreature {
         base.Die();
     }
 
+    private void IncrementXP()
+    {
+        AddXP(DifficultyController.GetRate());
+    }
 
 
 }

@@ -6,13 +6,12 @@ public class Slime : Enemy {
 
     private void Awake()
     {
-        CurrentHealth = 5;
-        MaxHealth = CurrentHealth;
-        Speed = 2;
+        
         JumpStrength = 2f;
-        Damage = 2;
-        NumOfXPOrbs = Random.Range(1, 3);
+        Level = 1;
+        SetStats();
 
+        NumOfXPOrbs = Random.Range(1, 3);
 
         DG = transform.GetChild(0).GetComponent<DetectGround>();
         RB = GetComponent<Rigidbody2D>();
@@ -43,6 +42,25 @@ public class Slime : Enemy {
     }
 
 
-     
+    protected override void LevelUp()
+    {
+        CurrentXP -= RequiredXP;
+        Level++;
+        SetStats();
+        print("Damage: " + Damage);
+        
+    }
+
+    private void SetStats()
+    {
+        RequiredXP = 50 + (15 * (Level - 1));
+        MaxHealth = 5 + (3 * (Level - 1));
+        Speed = 2 + (0.25f * (Level - 1));
+        Damage = 2 + (1 * (Level - 1));
+
+        CurrentHealth = MaxHealth;
+
+    }
+
 
 }

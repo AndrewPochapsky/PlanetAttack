@@ -7,7 +7,7 @@ public class PlayerUIController : MonoBehaviour {
 
     Player player;
 
-    public Text healthText, xpText, levelText;
+    public Text healthText, xpText, levelText, timeText;
 
 	// Use this for initialization
 	void Start () {
@@ -19,5 +19,6 @@ public class PlayerUIController : MonoBehaviour {
         healthText.text = "Health: " + player.GetCurrentHealth() + "/" + player.GetMaxHealth();
         xpText.text = "Current XP: " + player.GetCurrentXP() + "/" + player.GetRequiredXP();
         levelText.text = "Level: " + player.GetLevel();
+        timeText.text = Time.timeSinceLevelLoad.ToString("F2");
 	}
 }

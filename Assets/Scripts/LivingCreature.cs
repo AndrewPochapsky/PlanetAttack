@@ -67,7 +67,7 @@ public class LivingCreature : MonoBehaviour {
     {
         CurrentHealth -= damage;
     }
-    protected void LevelUp()
+    protected virtual void LevelUp()
     {
         //in case of overflow exp
         CurrentXP -= RequiredXP;
@@ -101,7 +101,7 @@ public class LivingCreature : MonoBehaviour {
     {
         return CurrentXP;
     }
-    public void AddXP(int xp)
+    public virtual void AddXP(int xp)
     {
         CurrentXP += xp;
     }
