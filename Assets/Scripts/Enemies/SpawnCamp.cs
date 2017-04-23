@@ -7,7 +7,7 @@ public class SpawnCamp : MonoBehaviour {
     private Enemy[] enemyTypes;
     [SerializeField]
     private int amountToSpawn;
-    [SerializeField][Tooltip("Spawn ever x amount of seconds")]
+    [SerializeField][Tooltip("Spawn every x amount of seconds")]
     private float spawnSpeed;
     private float timeBetweenSpawns = 6;
 	// Use this for initialization

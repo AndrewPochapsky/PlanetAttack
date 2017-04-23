@@ -8,6 +8,12 @@ public class Enemy : LivingCreature {
     protected int NumOfXPOrbs { get; set; }
     protected List<Transform> waypoints;
 
+
+
+    protected float HealthModifier { get; set; }
+    protected float DamageModifier { get; set; }
+    protected float SpeedModifier { get; set; }
+
     private Text levelText;
     private Canvas canvas;
 
@@ -27,6 +33,9 @@ public class Enemy : LivingCreature {
 
         canvas = transform.GetChild(1).GetComponent<Canvas>();
         levelText = canvas.transform.GetChild(0).GetComponent<Text>();
+
+        
+
 
 
         waypoints = new List<Transform>();
@@ -72,38 +81,10 @@ public class Enemy : LivingCreature {
         }
     }
 
-
+    //TODO make more acurrate
     private Vector2 ChooseMoveDirection()
     {
 
-        //Depending on which quadrant the enemy is on: dependent on y coord
-        //will decide whether or not the enemy should continue going left or right
-        //after x amount of waypoints, probably 1 or at most 2
-        /*
-        Vector3 startingTransform = transform.position;
-        //print(startingTransform);
-        if (closestWaypoint() != null && DG.getGrounded())
-        {
-            transform.position = Vector3.MoveTowards(transform.position, closestWaypoint().position, Speed * Time.deltaTime);
-            
-        }
-            
-        
-        if (Mathf.Round(transform.position.x) == Mathf.Round(closestWaypoint().position.x))
-        {/*
-            count++;
-            if (count == 1)
-            {
-                print("HAPPENING");
-                if(startingTransform.x < transform.position.x && startingTransform.y < -6.57f)
-                {
-                    transform.Translate(Vector2.left * Speed * Time.deltaTime);
-                }
-            }
-            else
-            {
-                transform.position = Vector3.MoveTowards(transform.position, closestWaypoint().position, Speed * Time.deltaTime);
-            }*/
         print("reached destination");
         if (transform.position.x < nearestWaypoint.position.x && transform.position.y < 0f)//
         {
