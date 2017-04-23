@@ -13,6 +13,7 @@ public class SpawnCamp : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         StartCoroutine(SpawnEnemies());
+        StartCoroutine(IncrementSpawnAmount());
         //InvokeRepeating("SpawnEnemies", 0, 10);
 	}
 	
@@ -37,5 +38,14 @@ public class SpawnCamp : MonoBehaviour {
         StartCoroutine(SpawnEnemies());
     }
 
+    private IEnumerator IncrementSpawnAmount()
+    {
+        yield return new WaitForSeconds(DifficultyController.GetIncrementTime());
+       
+        amountToSpawn++;
+        print("incrementing amount, amount is now: " + amountToSpawn);
+        StartCoroutine(IncrementSpawnAmount());
+
+    }
     
 }

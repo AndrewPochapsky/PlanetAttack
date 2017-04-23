@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Player : LivingCreature {
 
+    public AudioClip xpOrbClip;
+    private AudioSource audioSource;
+
     private LevelManager levelManager;
 
     private Attack lastAttackUsed;
@@ -17,13 +20,13 @@ public class Player : LivingCreature {
 
     private float invulnerabilityTimer = 0.5f;
     private bool invulnerable = false;
-
+    
     private void Awake()
     {
         Level = 1;
         CurrentXP = 0;
         RequiredXP = 100 + (50 * (Level - 1));
-        CurrentHealth = 1000;
+        CurrentHealth = 20;
         MaxHealth = CurrentHealth;
         Speed = 5;
         JumpStrength = 15;
@@ -39,6 +42,7 @@ public class Player : LivingCreature {
         planet = GameObject.FindObjectOfType<Planet>();
         RotationVector = hand.rotation.eulerAngles;
         levelManager = GameObject.FindObjectOfType<LevelManager>();
+        audioSource = GetComponent<AudioSource>();
 
 
     }
@@ -133,10 +137,12 @@ public class Player : LivingCreature {
     private void OnTriggerEnter2D(Collider2D collision)
     {
         Collectible collectible = collision.GetComponent<Collectible>();
-        if (collectible)
+        if (collectible && !GetComponent<Weapon>())
         {
             if(collectible is XPOrb)
             {
+                audioSource.clip = xpOrbClip;
+                audioSource.Play();
                 AddXP(collectible.GetValue());
                
             }

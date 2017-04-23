@@ -8,6 +8,8 @@ public class DifficultyController : MonoBehaviour {
 
     private static string survivedTime;
 
+    private static int incrementTime = 20;
+
     private static int currentXP;
     private static int xpRate = 2;
 	// Use this for initialization
@@ -50,6 +52,10 @@ public class DifficultyController : MonoBehaviour {
     {
         AddXP(xpRate);
     }
+    public static int GetIncrementTime()
+    {
+        return incrementTime;
+    }
 
-
+    
 }

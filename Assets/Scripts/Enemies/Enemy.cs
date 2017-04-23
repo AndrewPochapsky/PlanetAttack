@@ -197,7 +197,7 @@ public class Enemy : LivingCreature {
         
         for (int i = 0; i < NumOfXPOrbs; i++)
         {
-            Vector3 offset = new Vector3(Random.Range(0, 2), Random.Range(0, 2), 0);
+            Vector3 offset = new Vector3(0, Random.Range(0,2), 0);
             Instantiate(Resources.Load("Collectibles/XPOrbContainer"), transform.position+ offset, transform.rotation);
         }
         base.Die();

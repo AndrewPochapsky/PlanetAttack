@@ -9,5 +9,10 @@ public class XPOrb : Collectible {
         Value = Random.Range(5, 15);
     }
 
-   
+    protected override void Start()
+    {
+        base.Start();
+    }
+
+
 }
