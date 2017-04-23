@@ -11,6 +11,9 @@ public class Slime : Enemy {
         Speed = 2;
         JumpStrength = 2f;
         Damage = 2;
+        Level = 1;
+        RequiredXP = 50 + (15 * (Level - 1)); 
+
         NumOfXPOrbs = Random.Range(1, 3);
 
 
@@ -43,6 +46,12 @@ public class Slime : Enemy {
     }
 
 
-     
+    protected override void LevelUp()
+    {
+        CurrentXP -= RequiredXP;
+        Level++;
+        RequiredXP = 50 + (15 * (Level - 1));
+        CurrentHealth = MaxHealth;
+    }
 
 }

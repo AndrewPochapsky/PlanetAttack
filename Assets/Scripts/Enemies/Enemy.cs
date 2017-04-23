@@ -1,14 +1,25 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Enemy : LivingCreature {
     protected Player player { get; set; }
     protected int NumOfXPOrbs { get; set; }
     protected List<Transform> waypoints;
 
+    private Text levelText;
+    private Canvas canvas;
+    
+
 	// Use this for initialization
 	protected virtual void Start () {
+        CurrentXP = DifficultyController.GetCurrentXP();
+
+        canvas = transform.GetChild(1).GetComponent<Canvas>();
+        levelText = canvas.transform.GetChild(0).GetComponent<Text>();
+
+
         waypoints = new List<Transform>();
         GameObject[] wayPointObjects= GameObject.FindGameObjectsWithTag("Waypoint");
         foreach(GameObject obj in wayPointObjects)
@@ -17,8 +28,18 @@ public class Enemy : LivingCreature {
             waypoints.Add(wp);
         }
         //print(waypoints.Count);
+        InvokeRepeating("IncrementXP", 0, 1);
 	}
 	
+    protected override void Update()
+    {
+        levelText.text = Level.ToString();
+        print("Enemy xp: " + CurrentXP);
+        
+        //IncrementXP();
+        base.Update();
+        
+    }
 	
 	
 
@@ -131,6 +152,10 @@ public class Enemy : LivingCreature {
         base.Die();
     }
 
+    private void IncrementXP()
+    {
+        AddXP(DifficultyController.GetRate());
+    }
 
 
 }
