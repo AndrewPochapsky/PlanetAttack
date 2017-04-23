@@ -38,7 +38,7 @@ public class Weapon : MonoBehaviour {
             Vector3 enemyPos = target.transform.position;
             if (target.GetComponent<Enemy>())
             {
-                player.SetInvulnerable(true);
+                
                 print(target.ToString()+ " taking damage");
                 
                 target.RecieveDamage(player.GetLastAttack().GetDamage());
@@ -49,7 +49,7 @@ public class Weapon : MonoBehaviour {
                 }
             }
         }
-        player.SetInvulnerable(false);
+        
     }
 
     private void KnockBack(LivingCreature lc)

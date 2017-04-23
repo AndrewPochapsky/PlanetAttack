@@ -8,6 +8,10 @@ public class Enemy : LivingCreature {
     protected int NumOfXPOrbs { get; set; }
     protected List<Transform> waypoints;
 
+    
+
+    public AudioClip hitClip, dieClip;
+    private AudioSource audioSource;
 
 
     protected float HealthModifier { get; set; }
@@ -28,7 +32,8 @@ public class Enemy : LivingCreature {
     }
 
     // Use this for initialization
-    protected virtual void Start () {
+    protected override void Start () {
+        audioSource = GetComponent<AudioSource>();
         CurrentXP = DifficultyController.GetCurrentXP();
 
         canvas = transform.GetChild(0).GetComponent<Canvas>();
@@ -47,6 +52,7 @@ public class Enemy : LivingCreature {
         nearestWaypoint = closestWaypoint();
         //print(nearestWaypoint.ToString());
         moveDirection = ChooseMoveDirection();
+        base.Start();
     }
 	
     protected override void Update()
@@ -190,7 +196,8 @@ public class Enemy : LivingCreature {
     }
     protected override void Die()
     {
-        
+        audioSource.clip = dieClip;
+        audioSource.Play();
         for (int i = 0; i < NumOfXPOrbs; i++)
         {
             Vector3 offset = new Vector3(0, Random.Range(0,2), 0);
@@ -204,7 +211,13 @@ public class Enemy : LivingCreature {
         AddXP(DifficultyController.GetRate());
     }
 
-
+    public override void RecieveDamage(int damage)
+    {
+        audioSource.clip = hitClip;
+        audioSource.Play();
+        base.RecieveDamage(damage);
+    }
+    
 }
     
 

@@ -156,9 +156,9 @@ public class Player : LivingCreature {
     protected override void SetStats()
     {
         RequiredXP = 100 + (25 * (Level - 1));
-        MaxHealth = 12 + (3 * (Level - 1));
+        MaxHealth = 12 + (4 * (Level - 1));
         Speed = 5 + (0.75f * (Level - 1));
-        Damage = 2 + (1 * (Level - 1));
+        //Damage = 2 + (1 * (Level - 1));
         weapon.Attacks[0].SetDamage(weapon.Attacks[0].GetDamage() + (1 * (Level - 1)));
         CurrentHealth = MaxHealth;
     }

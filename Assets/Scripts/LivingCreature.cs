@@ -12,16 +12,22 @@ public class LivingCreature : MonoBehaviour {
     protected int CurrentXP { get; set; }
     protected int RequiredXP { get; set; }
 
+    private bool dead = false;
+
     protected DetectGround DG;
     protected Rigidbody2D RB { get; set; }
+    protected SpriteRenderer sp;
+    protected Collider2D col;
+    protected Canvas canvas;
 
     protected Planet planet { get; set; }
     protected int Damage { get; set; }
     
     protected virtual void Update()
     {
-        if (CurrentHealth <= 0)
+        if (CurrentHealth <= 0 && !dead)
         {
+            dead = true;
             Die();
         }
         if (CanLevelUp())
@@ -30,14 +36,19 @@ public class LivingCreature : MonoBehaviour {
         }
     }
 
-    private void Start()
+    protected virtual void Start()
     {
-       
+        sp = GetComponent<SpriteRenderer>();
+        col = GetComponent<Collider2D>();
+        canvas = transform.GetChild(0).GetComponent<Canvas>();
     }
 
     protected virtual void Die()
     {
-        Destroy(gameObject);
+        sp.enabled = false;
+        col.enabled = false;
+        canvas.enabled = false;
+        Invoke("Remove", 3);
     }
 
     protected virtual void Move()
@@ -117,10 +128,15 @@ public class LivingCreature : MonoBehaviour {
         RequiredXP = 50 + (10 * (Level - 1));
         MaxHealth = 5 + (3 * (Level - 1));
         Speed = 2 + (0.5f * (Level - 1));
-        Damage = 2 + (2 * (Level - 1));
+        if((Level-1)%2==0)
+            Damage = 2 + (1 * (Level - 1));
 
         CurrentHealth = MaxHealth;
 
+    }
+    private void Remove()
+    {
+        Destroy(gameObject);
     }
 
 
