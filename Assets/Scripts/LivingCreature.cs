@@ -38,9 +38,12 @@ public class LivingCreature : MonoBehaviour {
 
     protected virtual void Start()
     {
-        sp = GetComponent<SpriteRenderer>();
-        col = GetComponent<Collider2D>();
-        canvas = transform.GetChild(0).GetComponent<Canvas>();
+        if(sp==null)
+            sp = GetComponent<SpriteRenderer>();
+        if(col==null)
+            col = GetComponent<Collider2D>();
+        if(canvas==null)
+            canvas = transform.GetChild(0).GetComponent<Canvas>();
     }
 
     protected virtual void Die()
@@ -128,8 +131,7 @@ public class LivingCreature : MonoBehaviour {
         RequiredXP = 50 + (10 * (Level - 1));
         MaxHealth = 5 + (3 * (Level - 1));
         Speed = 2 + (0.5f * (Level - 1));
-        if((Level-1)%2==0)
-            Damage = 2 + (1 * (Level - 1));
+        Damage = 2 + (1 * (Level - 1));
 
         CurrentHealth = MaxHealth;
 

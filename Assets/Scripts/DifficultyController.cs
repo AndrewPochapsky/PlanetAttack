@@ -14,6 +14,7 @@ public class DifficultyController : MonoBehaviour {
     private static int xpRate = 2;
 	// Use this for initialization
 	void Start () {
+        currentXP = 0;
         InvokeRepeating("IncrementXP", 0, 1);
 	}
 	

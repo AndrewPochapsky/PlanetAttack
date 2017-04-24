@@ -6,7 +6,7 @@ public class XPOrb : Collectible {
 
     private void Awake()
     {
-        Value = Random.Range(5, 15);
+        Value = Random.Range(5, 13);
     }
 
     protected override void Start()

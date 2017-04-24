@@ -19,7 +19,6 @@ public class Enemy : LivingCreature {
     protected float SpeedModifier { get; set; }
 
     private Text levelText;
-    private Canvas canvas;
 
     private int count = 0;
 
@@ -36,8 +35,8 @@ public class Enemy : LivingCreature {
         audioSource = GetComponent<AudioSource>();
         CurrentXP = DifficultyController.GetCurrentXP();
 
-        canvas = transform.GetChild(0).GetComponent<Canvas>();
-        levelText = canvas.transform.GetChild(0).GetComponent<Text>();
+        
+        
 
         waypoints = new List<Transform>();
         GameObject[] wayPointObjects= GameObject.FindGameObjectsWithTag("Waypoint");
@@ -53,6 +52,7 @@ public class Enemy : LivingCreature {
         //print(nearestWaypoint.ToString());
         moveDirection = ChooseMoveDirection();
         base.Start();
+        levelText = canvas.transform.GetChild(0).GetComponent<Text>();
     }
 	
     protected override void Update()
