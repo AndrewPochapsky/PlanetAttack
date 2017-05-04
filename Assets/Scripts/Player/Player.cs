@@ -6,7 +6,8 @@ public class Player : LivingCreature {
 
     private PlayerUIController controller;
 
-    public AudioClip levelUpClip;
+    public AudioClip levelUpClip, hitClip;
+    //
     private AudioSource audioSource;
 
     private LevelManager levelManager;
@@ -106,6 +107,9 @@ public class Player : LivingCreature {
 
     public override void RecieveDamage(int damage)
     {
+        audioSource.clip = hitClip;
+        audioSource.Play();
+
         base.RecieveDamage(damage);
         StartCoroutine(BecomeInvulerable());
     }
