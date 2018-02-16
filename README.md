@@ -1,4 +1,3 @@
-# ludumdare38
-My Submission to the Ludum Dare 38 Gamejam <br>
-Theme: Small World <br>
-Download here: https://www.dropbox.com/s/fqmndyhy0tyeffi/Windows.zip?dl=0
+# Planet Attack - an extension on my Ludumdare 38 Project
+
+Original repository here: https://github.com/AndrewPochapsky/ludumdare38
