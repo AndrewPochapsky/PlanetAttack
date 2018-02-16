@@ -19,14 +19,6 @@ public class Weapon : MonoBehaviour {
         anim = GetComponent<Animator>();
 	}
 
-    private void Update()
-    {
-        if (GetComponent<Player>())
-        {
-            print("weapon has player");
-        }
-    }
-
     public void OnTriggerEnter2D(Collider2D col)
     {
         //for some reason this reads col as player so i need to go down and find the weapon through this
@@ -41,9 +33,9 @@ public class Weapon : MonoBehaviour {
                 
                 print(target.ToString()+ " taking damage");
                 
-                target.RecieveDamage(player.GetLastAttack().GetDamage());
+                target.RecieveDamage(player.LastAttack.Damage);
                 //prevent enemy from stopping when no knockback
-                if (player.GetLastAttack().GetKnockBack() > 0)
+                if (player.LastAttack.KnockBack > 0)
                 {
                     KnockBack(target);
                 }
@@ -67,23 +59,12 @@ public class Weapon : MonoBehaviour {
         //player is on the left of enemy
         if (xDifference < 0)
         {
-            targetRB.AddForce(Vector2.right * player.GetLastAttack().GetKnockBack(), ForceMode2D.Impulse);
-
-            
-
-           
+            targetRB.AddForce(Vector2.right * player.LastAttack.KnockBack, ForceMode2D.Impulse);
         }
         //player is on the right of enemy
         else if (xDifference > 0)
         {
-
-            targetRB.AddForce(Vector2.left * player.GetLastAttack().GetKnockBack(), ForceMode2D.Impulse);
-
-            
-
-            
-
-
+            targetRB.AddForce(Vector2.left * player.LastAttack.KnockBack, ForceMode2D.Impulse);
         }
     }
 

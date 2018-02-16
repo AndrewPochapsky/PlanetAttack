@@ -4,59 +4,26 @@ using UnityEngine;
 
 public class DifficultyController : MonoBehaviour {
 
-    private bool isSet = false;
+    public static string SurvivedTime { get; set; }
 
-    private static string survivedTime;
+    public static int IncrementTime { get; private set; } = 20;
 
-    private static int incrementTime = 20;
+    public static int CurrentXP { get; private set; }
+    public const int XPRate = 2;
 
-    private static int currentXP;
-    private static int xpRate = 2;
 	// Use this for initialization
 	void Start () {
-        currentXP = 0;
+        CurrentXP = 0;
         InvokeRepeating("IncrementXP", 0, 1);
 	}
-	
-	// Update is called once per frame
-	void Update () {
-       
-        //IncrementXP();
-	}
-
-    public static int GetCurrentXP()
-    {
-        return currentXP;
-    }
-
-    public static int GetRate()
-    {
-        return xpRate;
-    }
-
-    public static string GetSurvivedTime()
-    {
-        return survivedTime;
-    }
-
-    public static void SetSurvivedTime(string time)
-    {
-        survivedTime = time;
-    }
 
     public static void AddXP(int xp)
     {
-        currentXP += xp;
+        CurrentXP += xp;
     }
 
-    protected void IncrementXP()
+    private void IncrementXP()
     {
-        AddXP(xpRate);
+        AddXP(XPRate);
     }
-    public static int GetIncrementTime()
-    {
-        return incrementTime;
-    }
-
-    
 }

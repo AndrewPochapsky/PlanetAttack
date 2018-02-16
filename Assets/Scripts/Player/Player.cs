@@ -12,7 +12,7 @@ public class Player : LivingCreature {
 
     private LevelManager levelManager;
 
-    private Attack lastAttackUsed;
+    public Attack LastAttack { get; private set; }
     private Vector3 RotationVector;
     private bool rotationSet = false;
 
@@ -41,7 +41,10 @@ public class Player : LivingCreature {
     }
 
     // Use this for initialization
-    void Start () {
+    protected override void Start () {
+
+        base.Start();
+
         planet = GameObject.FindObjectOfType<Planet>();
         RotationVector = hand.rotation.eulerAngles;
         levelManager = GameObject.FindObjectOfType<LevelManager>();
@@ -59,10 +62,6 @@ public class Player : LivingCreature {
         //hand.transform.rotation = transform.rotation;
         Move();
 	}
-    public Attack GetLastAttack()
-    {
-        return lastAttackUsed;
-    }
 
     private void FixedUpdate()
     {
@@ -101,8 +100,8 @@ public class Player : LivingCreature {
 
     private void Attack(Attack attack, string suffix)
     {
-        weapon.anim.SetTrigger(attack.GetName()+suffix);
-        lastAttackUsed = attack;
+        weapon.anim.SetTrigger(attack.Name+suffix);
+        LastAttack = attack;
     }
 
     public override void RecieveDamage(int damage)
@@ -144,7 +143,7 @@ public class Player : LivingCreature {
     }
     protected override void Die()
     {
-        DifficultyController.SetSurvivedTime(Time.timeSinceLevelLoad.ToString("F2"));
+        DifficultyController.SurvivedTime = Time.timeSinceLevelLoad.ToString("F2");
         levelManager.LoadLevel("02End");
         base.Die();
     }
@@ -163,7 +162,7 @@ public class Player : LivingCreature {
         MaxHealth = 12 + (3 * (Level - 1));
         Speed = 5 + (0.75f * (Level - 1));
         //Damage = 2 + (1 * (Level - 1));
-        weapon.Attacks[0].SetDamage(weapon.Attacks[0].GetDamage() + (1 * (Level - 1)));
+        weapon.Attacks[0].Damage = (weapon.Attacks[0].Damage + (1 * (Level - 1)));
         CurrentHealth = MaxHealth;
     }
 

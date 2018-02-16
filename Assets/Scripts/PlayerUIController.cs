@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
+using DG.Tweening;
 
 public class PlayerUIController : MonoBehaviour {
 
@@ -14,14 +16,15 @@ public class PlayerUIController : MonoBehaviour {
         player = GameObject.FindObjectOfType<Player>();
   	}
 	
-	// Update is called once per frame
+	//TODO: replace with events
 	void Update () {
-        healthText.text = "Health: " + player.GetCurrentHealth() + "/" + player.GetMaxHealth();
-        xpText.text = "Current XP: " + player.GetCurrentXP() + "/" + player.GetRequiredXP();
-        levelText.text = "Level: " + player.GetLevel();
+        healthText.text = "Health: " + player.CurrentHealth + "/" + player.MaxHealth;
+        xpText.text = "Current XP: " + player.CurrentXP + "/" + player.RequiredXP;
+        levelText.text = "Level: " + player.Level;
         timeText.text = Time.timeSinceLevelLoad.ToString("F2");
 	}
 
+    //TODO: Replace with DOTween
     public IEnumerator DisplayLevelUpText()
     {
         levelUpText.text = "Level Up!";

@@ -33,10 +33,7 @@ public class Enemy : LivingCreature {
     // Use this for initialization
     protected override void Start () {
         audioSource = GetComponent<AudioSource>();
-        CurrentXP = DifficultyController.GetCurrentXP();
-
-        
-        
+        CurrentXP = DifficultyController.CurrentXP;
 
         waypoints = new List<Transform>();
         GameObject[] wayPointObjects= GameObject.FindGameObjectsWithTag("Waypoint");
@@ -60,15 +57,10 @@ public class Enemy : LivingCreature {
         transform.Translate(moveDirection* Speed * Time.deltaTime);
 
         levelText.text = Level.ToString();
-        //print("Enemy xp: " + CurrentXP);
-        
-        //IncrementXP();
         base.Update();
         
     }
 	
-	
-
     private void OnCollisionStay2D(Collision2D collision)
     {
        
@@ -83,7 +75,7 @@ public class Enemy : LivingCreature {
         }
     }
 
-    //TODO make more acurrate
+    //TODO actually remove this garbage and make it work
     private Vector2 ChooseMoveDirection()
     {
 
@@ -121,10 +113,6 @@ public class Enemy : LivingCreature {
         
         print("rip");
         return Vector2.zero;
-
-
-
-
     }
 
     private Transform closestWaypoint()
@@ -171,8 +159,6 @@ public class Enemy : LivingCreature {
            
         }
 
-        //print("First closest "+closestWaypoint.ToString());
-        //print("Second closest"+ secondClosestWaypoint.ToString());
         if (closestWaypoint != null)
         {
             float firstDistance = Vector2.Distance(closestWaypoint.position, player.transform.position);
@@ -190,8 +176,6 @@ public class Enemy : LivingCreature {
         {
             return null;
         }
-       
-
     
     }
     protected override void Die()
@@ -208,7 +192,7 @@ public class Enemy : LivingCreature {
 
     private void IncrementXP()
     {
-        AddXP(DifficultyController.GetRate());
+        AddXP(DifficultyController.XPRate);
     }
 
     public override void RecieveDamage(int damage)

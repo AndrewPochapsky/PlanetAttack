@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class LivingCreature : MonoBehaviour {
 
-    protected int CurrentHealth { get; set; }
-    protected int MaxHealth { get; set; }
+    public int CurrentHealth { get; protected set; }
+    public int MaxHealth { get; protected set; }
     protected float Speed { get; set; }
     protected float JumpStrength { get; set; }
-    protected int Level { get; set; }
-    protected int CurrentXP { get; set; }
-    protected int RequiredXP { get; set; }
+    public int Level { get; protected set; }
+    public int CurrentXP { get; protected set; }
+    public int RequiredXP { get; protected set; }
 
     private bool dead = false;
 
@@ -66,8 +66,6 @@ public class LivingCreature : MonoBehaviour {
         Vector3 gravityAcc = directionToPlanet * planet.GetGravity();
 
         RB.AddForce(gravityAcc, ForceMode2D.Force);
-
-
     }
 
     protected void Jump()
@@ -77,6 +75,7 @@ public class LivingCreature : MonoBehaviour {
             RB.AddForce(Vector2.up * JumpStrength, ForceMode2D.Impulse);
         }
     }
+
     public virtual void RecieveDamage(int damage)
     {
         CurrentHealth -= damage;
@@ -91,41 +90,14 @@ public class LivingCreature : MonoBehaviour {
 
     protected bool CanLevelUp()
     {
-        if(CurrentXP >= RequiredXP)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return CurrentXP >= RequiredXP;
     }
    
-    public int GetCurrentHealth()
-    {
-        return CurrentHealth;
-    }
-    public int GetMaxHealth()
-    {
-        return MaxHealth;
-    }
-
-    public int GetCurrentXP()
-    {
-        return CurrentXP;
-    }
     public virtual void AddXP(int xp)
     {
         CurrentXP += xp;
     }
-    public int GetRequiredXP()
-    {
-        return RequiredXP;
-    }
-    public int GetLevel()
-    {
-        return Level;
-    }
+    
     protected virtual void SetStats()
     {
         RequiredXP = 50 + (10 * (Level - 1));
@@ -140,8 +112,4 @@ public class LivingCreature : MonoBehaviour {
     {
         Destroy(gameObject);
     }
-
-
-
-
 }

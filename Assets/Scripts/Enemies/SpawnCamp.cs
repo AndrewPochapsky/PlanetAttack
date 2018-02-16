@@ -3,23 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class SpawnCamp : MonoBehaviour {
+
     [SerializeField]
     private Enemy[] enemyTypes;
+
     [SerializeField]
     private int amountToSpawn;
+    
     [SerializeField][Tooltip("Spawn every x amount of seconds")]
     private float spawnSpeed;
+
     private float timeBetweenSpawns = 6;
+
 	// Use this for initialization
 	void Start () {
         StartCoroutine(SpawnEnemies());
         StartCoroutine(IncrementSpawnAmount());
-        //InvokeRepeating("SpawnEnemies", 0, 10);
-	}
-	
-	// Update is called once per frame
-	void Update () {
-        
 	}
 
     private IEnumerator SpawnEnemies()
@@ -40,7 +39,7 @@ public class SpawnCamp : MonoBehaviour {
 
     private IEnumerator IncrementSpawnAmount()
     {
-        yield return new WaitForSeconds(DifficultyController.GetIncrementTime());
+        yield return new WaitForSeconds(DifficultyController.IncrementTime);
        
         amountToSpawn++;
         print("incrementing amount, amount is now: " + amountToSpawn);
