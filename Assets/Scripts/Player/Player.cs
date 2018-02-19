@@ -12,14 +12,13 @@ public class Player : LivingCreature {
 
     private LevelManager levelManager;
 
-    public Attack LastAttack { get; private set; }
     private Vector3 RotationVector;
     private bool rotationSet = false;
 
     private float rotation;
 
     public Transform hand;
-    private Weapon weapon;
+    private RangedWeapon weapon;
 
     private float invulnerabilityTimer = 0.5f;
     private bool invulnerable = false;
@@ -36,7 +35,7 @@ public class Player : LivingCreature {
         RB = GetComponent<Rigidbody2D>();
         DG = transform.GetChild(0).GetComponent<DetectGround>();
         //hand = transform.GetChild(0);
-        weapon = hand.GetChild(0).GetComponent<Weapon>();
+        weapon = hand.GetChild(0).GetComponent<RangedWeapon>();
         //Physics2D.gravity = Vector2.zero;
     }
 
@@ -85,24 +84,24 @@ public class Player : LivingCreature {
         }
         if (Input.GetKeyDown(KeyCode.A))
         {
-            Attack attack = weapon.Attacks[0];
-            Attack(attack,"left");
+            //Attack attack = weapon.Attacks[0];
+            //Attack(attack,"left");
         }
         else if (Input.GetKeyDown(KeyCode.D))
         {
-            Attack attack = weapon.Attacks[0];
-            Attack(attack,"right");
+            //Attack attack = weapon.Attacks[0];
+            //Attack(attack,"right");
         }
 
 
 
     }
-
+    /* 
     private void Attack(Attack attack, string suffix)
     {
         weapon.anim.SetTrigger(attack.Name+suffix);
         LastAttack = attack;
-    }
+    }*/
 
     public override void RecieveDamage(int damage)
     {
@@ -127,7 +126,7 @@ public class Player : LivingCreature {
     private void OnTriggerEnter2D(Collider2D collision)
     {
         Collectible collectible = collision.GetComponent<Collectible>();
-        if (collectible && !GetComponent<Weapon>())
+        if (collectible && !GetComponent<RangedWeapon>())
         {
             if(collectible is XPOrb)
             {
@@ -162,7 +161,7 @@ public class Player : LivingCreature {
         MaxHealth = 12 + (3 * (Level - 1));
         Speed = 5 + (0.75f * (Level - 1));
         //Damage = 2 + (1 * (Level - 1));
-        weapon.Attacks[0].Damage = (weapon.Attacks[0].Damage + (1 * (Level - 1)));
+        //weapon.Attacks[0].Damage = (weapon.Attacks[0].Damage + (1 * (Level - 1)));
         CurrentHealth = MaxHealth;
     }
 
