@@ -21,6 +21,7 @@ public class LivingCreature : MonoBehaviour {
     protected Canvas canvas;
 
     protected Planet planet { get; set; }
+    //TODO: move to Enemy Script
     protected int Damage { get; set; }
     
     protected virtual void Update()

@@ -7,21 +7,14 @@ public class Player : LivingCreature {
     private PlayerUIController controller;
 
     public AudioClip levelUpClip, hitClip;
-    //
+    
     private AudioSource audioSource;
 
     private LevelManager levelManager;
 
-    private Vector3 RotationVector;
-    private bool rotationSet = false;
-
-    private float rotation;
-
-    public Transform hand;
-    private RangedWeapon weapon;
-
     private float invulnerabilityTimer = 0.5f;
     private bool invulnerable = false;
+
     
     private void Awake()
     {
@@ -34,9 +27,6 @@ public class Player : LivingCreature {
         JumpStrength = 15;
         RB = GetComponent<Rigidbody2D>();
         DG = transform.GetChild(0).GetComponent<DetectGround>();
-        //hand = transform.GetChild(0);
-        weapon = hand.GetChild(0).GetComponent<RangedWeapon>();
-        //Physics2D.gravity = Vector2.zero;
     }
 
     // Use this for initialization
@@ -45,7 +35,6 @@ public class Player : LivingCreature {
         base.Start();
 
         planet = GameObject.FindObjectOfType<Planet>();
-        RotationVector = hand.rotation.eulerAngles;
         levelManager = GameObject.FindObjectOfType<LevelManager>();
         audioSource = GetComponent<AudioSource>();
         controller = GameObject.FindObjectOfType<PlayerUIController>();
@@ -55,10 +44,6 @@ public class Player : LivingCreature {
 	// Update is called once per frame
 	protected override void Update () {
         base.Update();
-        
-        //weapon.transform.rotation = Quaternion.Euler(transform.rotation.x, rotation, transform.rotation.z);
-        //SetZRotation(hand);
-        //hand.transform.rotation = transform.rotation;
         Move();
 	}
 
@@ -69,32 +54,14 @@ public class Player : LivingCreature {
 
     protected override void Move()
     {
-        if (Input.GetKey(KeyCode.LeftArrow))
+        if (Input.GetKey(KeyCode.A))
         {
-            rotation = 180;
             transform.Translate(Vector2.left * Speed * Time.deltaTime);
-
-
         }
-        if (Input.GetKey(KeyCode.RightArrow))
+        if (Input.GetKey(KeyCode.D))
         {
-            rotation = 0;
             transform.Translate(Vector2.right * Speed * Time.deltaTime);
-
         }
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            //Attack attack = weapon.Attacks[0];
-            //Attack(attack,"left");
-        }
-        else if (Input.GetKeyDown(KeyCode.D))
-        {
-            //Attack attack = weapon.Attacks[0];
-            //Attack(attack,"right");
-        }
-
-
-
     }
     /* 
     private void Attack(Attack attack, string suffix)

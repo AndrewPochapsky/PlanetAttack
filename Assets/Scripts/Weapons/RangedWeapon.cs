@@ -22,6 +22,13 @@ public class RangedWeapon : MonoBehaviour {
         {
             //Fire
             //Use object pooling
+            CurrentAmmo--;
+
+            if(CurrentAmmo == 0)
+            {
+                //Destroy weapon, replace with regular pistol
+            }
+
             nextFire = Time.time + FireRate;
         }
     }
