@@ -54,7 +54,7 @@ public class Player : LivingCreature {
 	protected override void Update () {
         base.Update();
         Move();
-        CheckIfFlip();
+        CheckIfReflectPlayer();
 	}
 
     private void FixedUpdate()
@@ -147,17 +147,18 @@ public class Player : LivingCreature {
         invulnerable = value;
     }
 
-    //TODO: Implement flipping when mouse is on opposite side of player
-    private void CheckIfFlip()
+    //TODO: Eventually look at removing the "speed switching" when the mouse is == to clamp position
+    //TODO: Change the player's sprites to rotate
+    /// <summary>
+    /// Flips the player by changing its sprites, when the mouse passes specific threshholds
+    /// </summary>
+    private void CheckIfReflectPlayer()
     {
-        //print("Value: " + (transform.eulerAngles.z - 360) + "");
         if (direction == Direction.RIGHT)
         {
-            print("Current: " + arm.transform.eulerAngles.z + "\n Max: " + arm.MaxClamp);
-            if(arm.transform.eulerAngles.z >= arm.MaxClamp)
+            //print("Current: " + arm.transform.localEulerAngles.z + "\n Max: " + arm.MaxClamp);
+            if(Mathf.Round(arm.transform.localEulerAngles.z) >= arm.MaxClamp)
             {
-                print("flipping LEFT");
-                //transform.eulerAngles = new Vector3(0, 180, transform.eulerAngles.z);
                 arm.transform.localPosition = new Vector3(
                     -arm.transform.localPosition.x, 
                     arm.transform.localPosition.x, 
@@ -171,11 +172,9 @@ public class Player : LivingCreature {
         }
         else if(direction == Direction.LEFT)
         {
-            print("Current: " + arm.transform.eulerAngles.z + "\n Min: " + arm.MinClamp);
-            if (arm.transform.eulerAngles.z <= arm.MinClamp + 3)
+            //print("Current: " + arm.transform.eulerAngles.z + "\n Min: " + arm.MinClamp);
+            if (Mathf.Round(arm.transform.localEulerAngles.z) <= arm.MinClamp + 3)
             {
-                print("flipping RIGHT");
-                //transform.eulerAngles = new Vector3(0, 0, transform.eulerAngles.z);
                 arm.transform.localPosition = new Vector3(
                     -arm.transform.localPosition.x,
                     arm.transform.localPosition.y,
