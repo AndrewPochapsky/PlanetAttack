@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class Player : LivingCreature {
 
+    public enum Direction { LEFT, RIGHT }
+
+    public Direction direction;
+
     private PlayerUIController controller;
 
     public AudioClip levelUpClip, hitClip;
@@ -14,6 +18,8 @@ public class Player : LivingCreature {
 
     private float invulnerabilityTimer = 0.5f;
     private bool invulnerable = false;
+
+    Arm arm;
 
     
     private void Awake()
@@ -27,6 +33,9 @@ public class Player : LivingCreature {
         JumpStrength = 15;
         RB = GetComponent<Rigidbody2D>();
         DG = transform.GetChild(0).GetComponent<DetectGround>();
+        arm = transform.GetChild(1).GetComponent<Arm>();
+
+        direction = Direction.RIGHT;
     }
 
     // Use this for initialization
@@ -45,6 +54,7 @@ public class Player : LivingCreature {
 	protected override void Update () {
         base.Update();
         Move();
+        CheckIfFlip();
 	}
 
     private void FixedUpdate()
@@ -136,4 +146,47 @@ public class Player : LivingCreature {
     {
         invulnerable = value;
     }
+
+    //TODO: Implement flipping when mouse is on opposite side of player
+    private void CheckIfFlip()
+    {
+        //print("Value: " + (transform.eulerAngles.z - 360) + "");
+        if (direction == Direction.RIGHT)
+        {
+            print("Current: " + arm.transform.eulerAngles.z + "\n Max: " + arm.MaxClamp);
+            if(arm.transform.eulerAngles.z >= arm.MaxClamp)
+            {
+                print("flipping LEFT");
+                //transform.eulerAngles = new Vector3(0, 180, transform.eulerAngles.z);
+                arm.transform.localPosition = new Vector3(
+                    -arm.transform.localPosition.x, 
+                    arm.transform.localPosition.x, 
+                    arm.transform.localPosition.z );
+
+                arm.MinClamp = 10;
+                arm.MaxClamp = 140;
+
+                direction = Direction.LEFT;
+            }
+        }
+        else if(direction == Direction.LEFT)
+        {
+            print("Current: " + arm.transform.eulerAngles.z + "\n Min: " + arm.MinClamp);
+            if (arm.transform.eulerAngles.z <= arm.MinClamp + 3)
+            {
+                print("flipping RIGHT");
+                //transform.eulerAngles = new Vector3(0, 0, transform.eulerAngles.z);
+                arm.transform.localPosition = new Vector3(
+                    -arm.transform.localPosition.x,
+                    arm.transform.localPosition.y,
+                    arm.transform.localPosition.z);
+
+                arm.MinClamp = 220;
+                arm.MaxClamp = 350;
+
+                direction = Direction.RIGHT;
+            }
+        }
+    }
+    
 }
