@@ -20,7 +20,7 @@ public class Player : LivingCreature {
     private bool invulnerable = false;
 
     Arm arm;
-
+    Transform weapon;
     
     private void Awake()
     {
@@ -34,8 +34,12 @@ public class Player : LivingCreature {
         RB = GetComponent<Rigidbody2D>();
         DG = transform.GetChild(0).GetComponent<DetectGround>();
         arm = transform.GetChild(1).GetComponent<Arm>();
+        weapon = arm.transform.GetChild(0).GetChild(0);
+
 
         direction = Direction.RIGHT;
+
+
     }
 
     // Use this for initialization
@@ -167,8 +171,13 @@ public class Player : LivingCreature {
                 arm.MinClamp = 10;
                 arm.MaxClamp = 140;
 
+                
+                //print(weapon.localEulerAngles);
                 direction = Direction.LEFT;
             }
+            print("setting A");
+            weapon.localEulerAngles = new Vector3(0, 0, 90);
+            
         }
         else if(direction == Direction.LEFT)
         {
@@ -182,9 +191,12 @@ public class Player : LivingCreature {
 
                 arm.MinClamp = 220;
                 arm.MaxClamp = 350;
-
+               
+                //print(weapon.localEulerAngles);
                 direction = Direction.RIGHT;
             }
+            print("setting B");
+            weapon.localEulerAngles = new Vector3(180, 0, -90);
         }
     }
     

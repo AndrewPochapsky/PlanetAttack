@@ -4,8 +4,19 @@ using UnityEngine;
 
 public class Arm : MonoBehaviour {
 
+    Transform weapon;
+
     public float MinClamp { get; set; } = 220;
     public float MaxClamp { get; set; } = 350;
+
+    /// <summary>
+    /// Start is called on the frame when a script is enabled just before
+    /// any of the Update methods is called the first time.
+    /// </summary>
+    void Start()
+    {
+        weapon = transform.GetChild(0);
+    }
 
 
 	// Update is called once per frame
