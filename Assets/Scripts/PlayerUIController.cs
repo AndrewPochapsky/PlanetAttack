@@ -18,9 +18,9 @@ public class PlayerUIController : MonoBehaviour {
 	
 	//TODO: replace with events
 	void Update () {
-        healthText.text = "Health: " + player.CurrentHealth + "/" + player.MaxHealth;
-        xpText.text = "Current XP: " + player.CurrentXP + "/" + player.RequiredXP;
-        levelText.text = "Level: " + player.Level;
+        healthText.text = "Health: " + player.data.CurrentHealth + "/" + player.data.MaxHealth;
+        xpText.text = "Current XP: " + player.data.CurrentXP + "/" + player.data.RequiredXP;
+        levelText.text = "Level: " + player.data.Level;
         timeText.text = Time.timeSinceLevelLoad.ToString("F2");
 	}
 

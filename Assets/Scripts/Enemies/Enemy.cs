@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Enemy : LivingCreature {
+public class Enemy : Entity {
     protected Player player { get; set; }
     protected int NumOfXPOrbs { get; set; }
     protected List<Transform> waypoints;
@@ -33,7 +33,7 @@ public class Enemy : LivingCreature {
     // Use this for initialization
     protected override void Start () {
         audioSource = GetComponent<AudioSource>();
-        CurrentXP = DifficultyController.CurrentXP;
+        data.CurrentXP = DifficultyController.CurrentXP;
 
         waypoints = new List<Transform>();
         GameObject[] wayPointObjects= GameObject.FindGameObjectsWithTag("Waypoint");
@@ -54,9 +54,9 @@ public class Enemy : LivingCreature {
 	
     protected override void Update()
     {
-        transform.Translate(moveDirection* Speed * Time.deltaTime);
+        transform.Translate(moveDirection* data.Speed * Time.deltaTime);
 
-        levelText.text = Level.ToString();
+        levelText.text = data.Level.ToString();
         base.Update();
         
     }

@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : LivingCreature {
+public class Player : Entity {
 
-    public enum Direction { LEFT, RIGHT }
-
-    public Direction direction;
+   
 
     private PlayerUIController controller;
 
@@ -24,20 +22,19 @@ public class Player : LivingCreature {
     
     private void Awake()
     {
-        Level = 1;
-        CurrentXP = 0;
-        RequiredXP = 100 + (25 * (Level - 1));
-        CurrentHealth = 12;
-        MaxHealth = CurrentHealth;
-        Speed = 5;
-        JumpStrength = 15;
+        data = new EntityData();
+
+        data.Level = 1;
+        data.CurrentXP = 0;
+        data.RequiredXP = 100 + (25 * (data.Level - 1));
+        data.CurrentHealth = 12;
+        data.MaxHealth = data.CurrentHealth;
+        data.Speed = 5;
+        data.JumpStrength = 15;
         RB = GetComponent<Rigidbody2D>();
         DG = transform.GetChild(0).GetComponent<DetectGround>();
-        arm = transform.GetChild(1).GetComponent<Arm>();
-        weapon = arm.transform.GetChild(0).GetChild(0);
+       
 
-
-        direction = Direction.RIGHT;
 
 
     }
@@ -57,8 +54,6 @@ public class Player : LivingCreature {
 	// Update is called once per frame
 	protected override void Update () {
         base.Update();
-        Move();
-        CheckIfReflectPlayer();
 	}
 
     private void FixedUpdate()
@@ -66,17 +61,6 @@ public class Player : LivingCreature {
         InduceGravity();
     }
 
-    protected override void Move()
-    {
-        if (Input.GetKey(KeyCode.A))
-        {
-            transform.Translate(Vector2.left * Speed * Time.deltaTime);
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-            transform.Translate(Vector2.right * Speed * Time.deltaTime);
-        }
-    }
     /* 
     private void Attack(Attack attack, string suffix)
     {
@@ -138,12 +122,12 @@ public class Player : LivingCreature {
 
     protected override void SetStats()
     {
-        RequiredXP = 100 + (65 * (Level - 1));
-        MaxHealth = 12 + (3 * (Level - 1));
-        Speed = 5 + (0.75f * (Level - 1));
+        data.RequiredXP = 100 + (65 * (data.Level - 1));
+        data.MaxHealth = 12 + (3 * (data.Level - 1));
+        data.Speed = 5 + (0.75f * (data.Level - 1));
         //Damage = 2 + (1 * (Level - 1));
         //weapon.Attacks[0].Damage = (weapon.Attacks[0].Damage + (1 * (Level - 1)));
-        CurrentHealth = MaxHealth;
+        data.CurrentHealth = data.MaxHealth;
     }
 
     public void SetInvulnerable(bool value)
@@ -151,53 +135,6 @@ public class Player : LivingCreature {
         invulnerable = value;
     }
 
-    //TODO: Eventually look at removing the "speed switching" when the mouse is == to clamp position
-    //TODO: Change the player's sprites to rotate
-    /// <summary>
-    /// Flips the player by changing its sprites, when the mouse passes specific threshholds
-    /// </summary>
-    private void CheckIfReflectPlayer()
-    {
-        if (direction == Direction.RIGHT)
-        {
-            //print("Current: " + arm.transform.localEulerAngles.z + "\n Max: " + arm.MaxClamp);
-            if(Mathf.Round(arm.transform.localEulerAngles.z) >= arm.MaxClamp)
-            {
-                arm.transform.localPosition = new Vector3(
-                    -arm.transform.localPosition.x, 
-                    arm.transform.localPosition.x, 
-                    arm.transform.localPosition.z );
-
-                arm.MinClamp = 10;
-                arm.MaxClamp = 140;
-
-                
-                //print(weapon.localEulerAngles);
-                direction = Direction.LEFT;
-            }
-            print("setting A");
-            weapon.localEulerAngles = new Vector3(0, 0, 90);
-            
-        }
-        else if(direction == Direction.LEFT)
-        {
-            //print("Current: " + arm.transform.eulerAngles.z + "\n Min: " + arm.MinClamp);
-            if (Mathf.Round(arm.transform.localEulerAngles.z) <= arm.MinClamp + 3)
-            {
-                arm.transform.localPosition = new Vector3(
-                    -arm.transform.localPosition.x,
-                    arm.transform.localPosition.y,
-                    arm.transform.localPosition.z);
-
-                arm.MinClamp = 220;
-                arm.MaxClamp = 350;
-               
-                //print(weapon.localEulerAngles);
-                direction = Direction.RIGHT;
-            }
-            print("setting B");
-            weapon.localEulerAngles = new Vector3(180, 0, -90);
-        }
-    }
+    
     
 }

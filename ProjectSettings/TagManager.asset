@@ -8,6 +8,7 @@ TagManager:
   - Waypoint
   - Weapon
   - Panel
+  - GroundCol
   layers:
   - Default
   - TransparentFX

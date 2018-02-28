@@ -6,9 +6,9 @@ public class Slime : Enemy {
 
     private void Awake()
     {
-        
-        JumpStrength = 2f;
-        Level = 1;
+
+        data.JumpStrength = 2f;
+        data.Level = 1;
         SetStats();
 
         NumOfXPOrbs = Random.Range(1, 4);
@@ -31,7 +31,7 @@ public class Slime : Enemy {
 	// Update is called once per frame
 	protected override void Update () {
         base.Update();
-        Move();
+        //Move();
         //Jump();
 	}
 

@@ -2,15 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LivingCreature : MonoBehaviour {
+public class Entity : MonoBehaviour {
 
-    public int CurrentHealth { get; protected set; }
-    public int MaxHealth { get; protected set; }
-    protected float Speed { get; set; }
-    protected float JumpStrength { get; set; }
-    public int Level { get; protected set; }
-    public int CurrentXP { get; protected set; }
-    public int RequiredXP { get; protected set; }
+    
+
+    public EntityData data { get; set; }
 
     private bool dead = false;
 
@@ -26,7 +22,7 @@ public class LivingCreature : MonoBehaviour {
     
     protected virtual void Update()
     {
-        if (CurrentHealth <= 0 && !dead)
+        if (data.CurrentHealth <= 0 && !dead)
         {
             dead = true;
             Die();
@@ -55,11 +51,6 @@ public class LivingCreature : MonoBehaviour {
         Invoke("Remove", 3);
     }
 
-    protected virtual void Move()
-    {
-
-    }
-
     protected void InduceGravity()
     {
         Vector3 directionToPlanet = planet.transform.position - transform.position;
@@ -73,40 +64,40 @@ public class LivingCreature : MonoBehaviour {
     {
         if (DG.getGrounded())
         {
-            RB.AddForce(Vector2.up * JumpStrength, ForceMode2D.Impulse);
+            RB.AddForce(Vector2.up * data.JumpStrength, ForceMode2D.Impulse);
         }
     }
 
     public virtual void RecieveDamage(int damage)
     {
-        CurrentHealth -= damage;
+        data.CurrentHealth -= damage;
     }
     protected virtual void LevelUp()
     {
         //in case of overflow exp
-        CurrentXP -= RequiredXP;
-        Level++;
+        data.CurrentXP -= data.RequiredXP;
+        data.Level++;
         SetStats();
     }
 
     protected bool CanLevelUp()
     {
-        return CurrentXP >= RequiredXP;
+        return data.CurrentXP >= data.RequiredXP;
     }
    
     public virtual void AddXP(int xp)
     {
-        CurrentXP += xp;
+        data.CurrentXP += xp;
     }
     
     protected virtual void SetStats()
     {
-        RequiredXP = 50 + (10 * (Level - 1));
-        MaxHealth = 5 + (3 * (Level - 1));
-        Speed = 2 + (0.5f * (Level - 1));
-        Damage = 2 + (1 * (Level - 1));
+        data.RequiredXP = 50 + (10 * (data.Level - 1));
+        data.MaxHealth = 5 + (3 * (data.Level - 1));
+        data.Speed = 2 + (0.5f * (data.Level - 1));
+        Damage = 2 + (1 * (data.Level - 1));
 
-        CurrentHealth = MaxHealth;
+        data.CurrentHealth = data.MaxHealth;
 
     }
     private void Remove()
