@@ -132,6 +132,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2aba0ddfa4d73f842a8052525385ab95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  menu: {fileID: 8300000, guid: 526f7bae06c5a5b4299b9d43bd1b412a, type: 3}
-  game: {fileID: 8300000, guid: 282905a851184ef4696ecdc110659870, type: 3}
-  end: {fileID: 8300000, guid: 80b6e43a8792877409a514c41dc1ba77, type: 3}
+  _00Menu: {fileID: 8300000, guid: 526f7bae06c5a5b4299b9d43bd1b412a, type: 3}
+  _01Game: {fileID: 8300000, guid: 282905a851184ef4696ecdc110659870, type: 3}
+  _02End: {fileID: 8300000, guid: 80b6e43a8792877409a514c41dc1ba77, type: 3}

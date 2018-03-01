@@ -4,19 +4,16 @@ using UnityEngine;
 
 public class Entity : MonoBehaviour {
 
-    
-
     public EntityData data { get; set; }
 
     private bool dead = false;
 
     protected DetectGround DG;
-    protected Rigidbody2D RB { get; set; }
+    public Rigidbody2D rb { get; protected set; }
     protected SpriteRenderer sp;
     protected Collider2D col;
     protected Canvas canvas;
 
-    protected Planet planet { get; set; }
     //TODO: move to Enemy Script
     protected int Damage { get; set; }
     
@@ -35,12 +32,17 @@ public class Entity : MonoBehaviour {
 
     protected virtual void Start()
     {
-        if(sp==null)
-            sp = GetComponent<SpriteRenderer>();
-        if(col==null)
-            col = GetComponent<Collider2D>();
-        if(canvas==null)
-            canvas = transform.GetChild(0).GetComponent<Canvas>();
+        sp = GetComponent<SpriteRenderer>();
+        col = GetComponent<Collider2D>();
+        rb = GetComponent<Rigidbody2D>();
+    
+        canvas = transform.GetChild(0).GetComponent<Canvas>();
+            
+    }
+
+    protected virtual void FixedUpdate()
+    {
+        Planet.Instance.InduceGravity(this);
     }
 
     protected virtual void Die()
@@ -51,20 +53,11 @@ public class Entity : MonoBehaviour {
         Invoke("Remove", 3);
     }
 
-    protected void InduceGravity()
-    {
-        Vector3 directionToPlanet = planet.transform.position - transform.position;
-        directionToPlanet.Normalize();
-        Vector3 gravityAcc = directionToPlanet * planet.GetGravity();
-
-        RB.AddForce(gravityAcc, ForceMode2D.Force);
-    }
-
     protected void Jump()
     {
         if (DG.getGrounded())
         {
-            RB.AddForce(Vector2.up * data.JumpStrength, ForceMode2D.Impulse);
+            rb.AddForce(Vector2.up * data.JumpStrength, ForceMode2D.Impulse);
         }
     }
 
@@ -100,6 +93,7 @@ public class Entity : MonoBehaviour {
         data.CurrentHealth = data.MaxHealth;
 
     }
+    
     private void Remove()
     {
         Destroy(gameObject);

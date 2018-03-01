@@ -3,21 +3,31 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Planet : MonoBehaviour {
-    [SerializeField]
-    float gravity = 150;
+    
+    
+    readonly float gravity = 150;
+
+    public static Planet Instance;
+
 
 	// Use this for initialization
 	void Start () {
-		
+		if(Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            Instance = this;
+        }
 	}
 	
-	// Update is called once per frame
-	void Update () {
-		
-	}
-
-    public float GetGravity()
+    public void InduceGravity(Entity entity)
     {
-        return gravity;
+        Vector3 directionToPlanet = transform.position - entity.transform.position;
+        directionToPlanet.Normalize();
+        Vector3 gravityAcc = directionToPlanet * gravity;
+
+        entity.rb.AddForce(gravityAcc, ForceMode2D.Force);
     }
 }

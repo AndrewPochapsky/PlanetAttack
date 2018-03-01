@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class Player : Entity {
 
-   
-
     private PlayerUIController controller;
 
     public AudioClip levelUpClip, hitClip;
@@ -16,9 +14,6 @@ public class Player : Entity {
 
     private float invulnerabilityTimer = 0.5f;
     private bool invulnerable = false;
-
-    Arm arm;
-    Transform weapon;
     
     private void Awake()
     {
@@ -31,12 +26,8 @@ public class Player : Entity {
         data.MaxHealth = data.CurrentHealth;
         data.Speed = 5;
         data.JumpStrength = 15;
-        RB = GetComponent<Rigidbody2D>();
+        rb = GetComponent<Rigidbody2D>();
         DG = transform.GetChild(0).GetComponent<DetectGround>();
-       
-
-
-
     }
 
     // Use this for initialization
@@ -44,7 +35,6 @@ public class Player : Entity {
 
         base.Start();
 
-        planet = GameObject.FindObjectOfType<Planet>();
         levelManager = GameObject.FindObjectOfType<LevelManager>();
         audioSource = GetComponent<AudioSource>();
         controller = GameObject.FindObjectOfType<PlayerUIController>();
@@ -56,10 +46,6 @@ public class Player : Entity {
         base.Update();
 	}
 
-    private void FixedUpdate()
-    {
-        InduceGravity();
-    }
 
     /* 
     private void Attack(Attack attack, string suffix)

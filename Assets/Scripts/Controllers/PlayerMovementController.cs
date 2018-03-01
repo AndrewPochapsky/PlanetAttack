@@ -67,7 +67,6 @@ public class PlayerMovementController : MonoBehaviour {
                 //print(weapon.localEulerAngles);
                 direction = Direction.LEFT;
             }
-            print("setting A");
             weapon.localEulerAngles = new Vector3(0, 0, 90);
 
         }
@@ -87,7 +86,6 @@ public class PlayerMovementController : MonoBehaviour {
                 //print(weapon.localEulerAngles);
                 direction = Direction.RIGHT;
             }
-            print("setting B");
             weapon.localEulerAngles = new Vector3(180, 0, -90);
         }
     }

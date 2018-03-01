@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+//TODO: remove all move related stuff into a new class once the movement has been finalized
 public class Enemy : Entity {
     protected Player player { get; set; }
     protected int NumOfXPOrbs { get; set; }
@@ -13,22 +14,11 @@ public class Enemy : Entity {
     public AudioClip hitClip, dieClip;
     private AudioSource audioSource;
 
-
-    protected float HealthModifier { get; set; }
-    protected float DamageModifier { get; set; }
-    protected float SpeedModifier { get; set; }
-
     private Text levelText;
-
-    private int count = 0;
 
     Transform nearestWaypoint;
     Vector2 moveDirection;
 
-    private void Awake()
-    {
-       
-    }
 
     // Use this for initialization
     protected override void Start () {
