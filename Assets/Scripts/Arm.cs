@@ -5,6 +5,7 @@ using UnityEngine;
 public class Arm : MonoBehaviour {
 
     Transform weapon;
+    public Vector3 mouseDirection;
 
     public float MinClamp { get; set; } = 220;
     public float MaxClamp { get; set; } = 350;
@@ -27,8 +28,8 @@ public class Arm : MonoBehaviour {
     private void Rotate()
     {
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector2 direction = (mousePos - (Vector2)transform.position).normalized;
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90;
+        mouseDirection = (mousePos - (Vector2)transform.position).normalized;
+        float angle = Mathf.Atan2(mouseDirection.y, mouseDirection.x) * Mathf.Rad2Deg - 90;
         transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
 
         transform.localEulerAngles = new Vector3(

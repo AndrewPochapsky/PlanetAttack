@@ -7,11 +7,13 @@ public class Planet : MonoBehaviour {
     
     readonly float gravity = 150;
 
+    #region Singleton
+
     public static Planet Instance;
 
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
 		if(Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -21,6 +23,8 @@ public class Planet : MonoBehaviour {
             Instance = this;
         }
 	}
+
+    #endregion Singleton
 	
     public void InduceGravity(Entity entity)
     {

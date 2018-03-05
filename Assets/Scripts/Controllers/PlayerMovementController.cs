@@ -6,10 +6,12 @@ public class PlayerMovementController : MonoBehaviour {
 
     public enum Direction { LEFT, RIGHT }
 
+    public Arm arm;
+
     private Direction direction;
 
 	Player player;
-    Arm arm;
+    
     Transform weapon;
 
 	// Use this for initialization

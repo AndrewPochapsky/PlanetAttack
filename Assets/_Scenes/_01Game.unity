@@ -206,7 +206,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &57949522
 GameObject:
@@ -333,6 +333,7 @@ GameObject:
   m_Component:
   - component: {fileID: 459536909}
   - component: {fileID: 459536910}
+  - component: {fileID: 459536911}
   m_Layer: 0
   m_Name: Pistol
   m_TagString: Untagged
@@ -397,6 +398,17 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
+--- !u!114 &459536911
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 459536908}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a90c8a1e1f574247a1f5187ba72a4da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &572424604
 GameObject:
   m_ObjectHideFlags: 0
@@ -944,7 +956,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4215733318645198, guid: d3de5b5bde0696240890d5f84c6aaf82, type: 2}
       propertyPath: m_RootOrder
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 114559640502480280, guid: d3de5b5bde0696240890d5f84c6aaf82,
         type: 2}
@@ -1053,7 +1065,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1299250898
 GameObject:
@@ -1146,7 +1158,7 @@ Transform:
   - {fileID: 804824770}
   - {fileID: 661924314}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -0}
 --- !u!1 &1335191054
 GameObject:
@@ -1179,6 +1191,50 @@ Transform:
   m_Father: {fileID: 804824770}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1561840491
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1561840492}
+  - component: {fileID: 1561840493}
+  m_Layer: 0
+  m_Name: ObjectPooler
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1561840492
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1561840491}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1561840493
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1561840491}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2876a67a9d202414db7c65e28295c98e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pools:
+  - tag: Bullet
+    prefab: {fileID: 1923085595373464, guid: 558fb22ec812c2c4995bfe7306e700fa, type: 2}
+    size: 20
 --- !u!1001 &1765753733
 Prefab:
   m_ObjectHideFlags: 0
@@ -1216,7 +1272,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4912063056808760, guid: 3e0fc27b24a7c72449b86969eba74740, type: 2}
       propertyPath: m_RootOrder
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1866126777823316, guid: 3e0fc27b24a7c72449b86969eba74740, type: 2}
       propertyPath: m_IsActive
@@ -1460,7 +1516,7 @@ RectTransform:
   - {fileID: 2123020836}
   - {fileID: 572424605}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1504,7 +1560,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4834645447344622, guid: fbeeca321ca58b94a80f980fe7cc6396, type: 2}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: fbeeca321ca58b94a80f980fe7cc6396, type: 2}

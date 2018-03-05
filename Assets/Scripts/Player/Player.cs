@@ -14,9 +14,22 @@ public class Player : Entity {
 
     private float invulnerabilityTimer = 0.5f;
     private bool invulnerable = false;
+
+    public static Player Instance;
     
     private void Awake()
     {
+        if(Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            Instance = this;
+        }
+
+
+
         data = new EntityData();
 
         data.Level = 1;
