@@ -9,8 +9,5 @@ public class Bullet : Projectile
 		rb = GetComponent<Rigidbody2D>();
 	}
 	
-    public override void OnObjectSpawn()
-    {
-        transform.Translate(Vector3.right * Time.deltaTime * 100);
-    }
+    public override void OnObjectSpawn(){ }
 }

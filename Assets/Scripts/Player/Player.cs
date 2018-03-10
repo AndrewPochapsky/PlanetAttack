@@ -17,7 +17,7 @@ public class Player : Entity {
 
     public static Player Instance;
     
-    private void Awake()
+    protected override void Awake()
     {
         if(Instance != null && Instance != this)
         {
@@ -28,9 +28,9 @@ public class Player : Entity {
             Instance = this;
         }
 
+        base.Awake();
 
-
-        data = new EntityData();
+        //data = new EntityData();
 
         data.Level = 1;
         data.CurrentXP = 0;
@@ -41,18 +41,12 @@ public class Player : Entity {
         data.JumpStrength = 15;
         rb = GetComponent<Rigidbody2D>();
         DG = transform.GetChild(0).GetComponent<DetectGround>();
-    }
-
-    // Use this for initialization
-    protected override void Start () {
-
-        base.Start();
 
         levelManager = GameObject.FindObjectOfType<LevelManager>();
         audioSource = GetComponent<AudioSource>();
         controller = GameObject.FindObjectOfType<PlayerUIController>();
-
     }
+
 	
 	// Update is called once per frame
 	protected override void Update () {

@@ -5,7 +5,7 @@ using UnityEngine;
 public class SpawnCamp : MonoBehaviour {
 
     [SerializeField]
-    private Enemy[] enemyTypes;
+    private string[] enemyTypes;
 
     [SerializeField]
     private int amountToSpawn;
@@ -18,23 +18,22 @@ public class SpawnCamp : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         StartCoroutine(SpawnEnemies());
-        StartCoroutine(IncrementSpawnAmount());
+        //StartCoroutine(IncrementSpawnAmount());
 	}
 
     private IEnumerator SpawnEnemies()
     {
         int randomEnemyIndex = Random.Range(0, enemyTypes.Length);
-        Enemy enemyToSpawn = enemyTypes[randomEnemyIndex];
+        string enemyToSpawn = enemyTypes[randomEnemyIndex];
 
         for (int i = 0; i < amountToSpawn; i++)
         {
-            
-            Instantiate(enemyToSpawn, transform.position, transform.rotation);
+            ObjectPooler.Instance.SpawnFromPool(enemyToSpawn, transform.position, transform.rotation);
             yield return new WaitForSeconds(spawnSpeed);
         }
         print("SPAWNING");
         yield return new WaitForSeconds(timeBetweenSpawns);
-        StartCoroutine(SpawnEnemies());
+        //StartCoroutine(SpawnEnemies());
     }
 
     private IEnumerator IncrementSpawnAmount()

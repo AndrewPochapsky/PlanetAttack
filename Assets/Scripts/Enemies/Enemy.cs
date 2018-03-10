@@ -4,8 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 
 //TODO: remove all move related stuff into a new class once the movement has been finalized
-public class Enemy : Entity {
-    protected Player player { get; set; }
+public class Enemy : Entity, IPoolable {
+    //protected Player player { get; set; }
     protected int NumOfXPOrbs { get; set; }
     protected List<Transform> waypoints;
 
@@ -21,7 +21,9 @@ public class Enemy : Entity {
 
 
     // Use this for initialization
-    protected override void Start () {
+    protected override void Awake () {
+        base.Awake();
+
         audioSource = GetComponent<AudioSource>();
         data.CurrentXP = DifficultyController.CurrentXP;
 
@@ -33,12 +35,11 @@ public class Enemy : Entity {
             waypoints.Add(wp);
         }
         //print(waypoints.Count);
-        InvokeRepeating("IncrementXP", 0, 1);
+        //InvokeRepeating("IncrementXP", 0, 1);
         
-        nearestWaypoint = closestWaypoint();
+        //nearestWaypoint = closestWaypoint();
         //print(nearestWaypoint.ToString());
-        moveDirection = ChooseMoveDirection();
-        base.Start();
+        //moveDirection = ChooseMoveDirection();
         levelText = canvas.transform.GetChild(0).GetComponent<Text>();
     }
 	
@@ -50,15 +51,31 @@ public class Enemy : Entity {
         base.Update();
         
     }
-	
-    private void OnCollisionStay2D(Collision2D collision)
+
+
+    public void OnObjectSpawn()
     {
-       
-        if (collision.gameObject.tag=="Player" && collision.gameObject.tag!="Weapon")
+        throw new System.NotImplementedException();
+    }
+	
+    /// <summary>
+    /// Sent when another object enters a trigger collider attached to this
+    /// object (2D physics only).
+    /// </summary>
+    /// <param name="other">The other Collider2D involved in this collision.</param>
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        Projectile projectile = other.GetComponent<Projectile>();
+    }
+
+    private void OnCollisionStay2D(Collision2D col)
+    {
+        Player player = col.gameObject.GetComponent<Player>();
+        if (player != null)
         {
             if (!player.IsInvulnerable())
             {
-                print(collision.gameObject.ToString() + " taking damage");
+                print(col.gameObject.ToString() + " taking damage");
                 player.RecieveDamage(Damage);
             }
            
@@ -104,7 +121,7 @@ public class Enemy : Entity {
         print("rip");
         return Vector2.zero;
     }
-
+    /*
     private Transform closestWaypoint()
     {
         //Transform[] closestWaypoints = new Transform[2];
@@ -168,6 +185,7 @@ public class Enemy : Entity {
         }
     
     }
+    */
     protected override void Die()
     {
         audioSource.clip = dieClip;
@@ -191,7 +209,6 @@ public class Enemy : Entity {
         audioSource.Play();
         base.RecieveDamage(damage);
     }
-    
 }
     
 

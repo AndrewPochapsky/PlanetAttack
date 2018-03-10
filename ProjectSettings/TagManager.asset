@@ -9,6 +9,7 @@ TagManager:
   - Weapon
   - Panel
   - GroundCol
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -18,10 +19,10 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
-  - 
-  - 
+  - Enemies
+  - Friendlies
+  - Auxiliaries
+  - Planet
   - 
   - 
   - 

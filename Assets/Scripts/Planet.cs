@@ -5,7 +5,7 @@ using UnityEngine;
 public class Planet : MonoBehaviour {
     
     
-    readonly float gravity = 150;
+    readonly float gravity = 175;
 
     #region Singleton
 

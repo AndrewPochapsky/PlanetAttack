@@ -16,6 +16,16 @@ public class Entity : MonoBehaviour {
 
     //TODO: move to Enemy Script
     protected int Damage { get; set; }
+
+    protected virtual void Awake()
+    {
+        data = new EntityData();
+        sp = GetComponent<SpriteRenderer>();
+        col = GetComponent<Collider2D>();
+        rb = GetComponent<Rigidbody2D>();
+
+        canvas = transform.GetChild(0).GetComponent<Canvas>();
+    }
     
     protected virtual void Update()
     {
@@ -30,16 +40,6 @@ public class Entity : MonoBehaviour {
         }
     }
 
-    protected virtual void Start()
-    {
-        sp = GetComponent<SpriteRenderer>();
-        col = GetComponent<Collider2D>();
-        rb = GetComponent<Rigidbody2D>();
-    
-        canvas = transform.GetChild(0).GetComponent<Canvas>();
-            
-    }
-
     protected virtual void FixedUpdate()
     {
         Planet.Instance.InduceGravity(this);
@@ -49,7 +49,8 @@ public class Entity : MonoBehaviour {
     {
         sp.enabled = false;
         col.enabled = false;
-        canvas.enabled = false;
+        if(canvas != null)
+            canvas.enabled = false;
         Invoke("Remove", 3);
     }
 
