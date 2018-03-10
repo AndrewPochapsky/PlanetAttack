@@ -8,30 +8,27 @@ using DG.Tweening;
 
 public class PlayerUIController : MonoBehaviour {
 
-    Player player;
-
-    public Text healthText, xpText, levelText, timeText, levelUpText;
+    public TextMeshProUGUI healthText, coinsText, timeText;
 
 	// Use this for initialization
 	void Start () {
-        player = GameObject.FindObjectOfType<Player>();
+      
+        Player.Instance.OnHealthUpdatedEvent += OnHealthUpdated;
+        Player.Instance.OnCoinsUpdatedEvent += OnCoinsUpdated;
   	}
 	
-	//TODO: replace with events
 	void Update () {
-        healthText.text = "Health: " + player.data.CurrentHealth + "/" + player.data.MaxHealth;
-        xpText.text = "Current XP: " + player.data.CurrentXP + "/" + player.data.RequiredXP;
-        levelText.text = "Level: " + player.data.Level;
         timeText.text = Time.timeSinceLevelLoad.ToString("F2");
 	}
 
-    //TODO: Replace with DOTween
-    public IEnumerator DisplayLevelUpText()
+    private void OnHealthUpdated(int current, int max)
     {
-        levelUpText.text = "Level Up!";
-        levelUpText.gameObject.SetActive(true);
-        yield return new WaitForSeconds(2);
-        levelUpText.gameObject.SetActive(false);
+        healthText.text = "Health: " + current+ "/" + max;
+    }
+
+    private void OnCoinsUpdated(int value)
+    {
+        coinsText.text = "Coins: " + value;
     }
 
 }

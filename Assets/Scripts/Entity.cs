@@ -6,12 +6,9 @@ public class Entity : MonoBehaviour {
 
     public EntityData data { get; set; }
 
-    private bool dead = false;
-
     protected DetectGround DG;
     public Rigidbody2D rb { get; protected set; }
     protected SpriteRenderer sp;
-    protected Collider2D col;
     protected Canvas canvas;
 
     //TODO: move to Enemy Script
@@ -21,7 +18,6 @@ public class Entity : MonoBehaviour {
     {
         data = new EntityData();
         sp = GetComponent<SpriteRenderer>();
-        col = GetComponent<Collider2D>();
         rb = GetComponent<Rigidbody2D>();
 
         canvas = transform.GetChild(0).GetComponent<Canvas>();
@@ -29,11 +25,6 @@ public class Entity : MonoBehaviour {
     
     protected virtual void Update()
     {
-        if (data.CurrentHealth <= 0 && !dead)
-        {
-            dead = true;
-            Die();
-        }
         if (CanLevelUp())
         {
             LevelUp();
@@ -47,11 +38,7 @@ public class Entity : MonoBehaviour {
 
     protected virtual void Die()
     {
-        sp.enabled = false;
-        col.enabled = false;
-        if(canvas != null)
-            canvas.enabled = false;
-        Invoke("Remove", 3);
+        gameObject.SetActive(false);
     }
 
     protected void Jump()
@@ -65,6 +52,10 @@ public class Entity : MonoBehaviour {
     public virtual void RecieveDamage(int damage)
     {
         data.CurrentHealth -= damage;
+        if (data.CurrentHealth <= 0)
+        {
+            Die();
+        }
     }
     protected virtual void LevelUp()
     {
@@ -95,8 +86,4 @@ public class Entity : MonoBehaviour {
 
     }
     
-    private void Remove()
-    {
-        Destroy(gameObject);
-    }
 }

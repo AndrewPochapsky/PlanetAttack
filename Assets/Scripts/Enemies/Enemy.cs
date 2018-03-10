@@ -7,9 +7,10 @@ using UnityEngine.UI;
 public class Enemy : Entity, IPoolable {
     //protected Player player { get; set; }
     protected int NumOfXPOrbs { get; set; }
-    protected List<Transform> waypoints;
+    protected int MinCoins { get; set; }
+    protected int MaxCoins { get; set; }
 
-    
+    protected List<Transform> waypoints;
 
     public AudioClip hitClip, dieClip;
     private AudioSource audioSource;
@@ -52,10 +53,10 @@ public class Enemy : Entity, IPoolable {
         
     }
 
-
-    public void OnObjectSpawn()
+    //Reset everything
+    public virtual void OnObjectSpawn()
     {
-        throw new System.NotImplementedException();
+        
     }
 	
     /// <summary>
@@ -66,6 +67,11 @@ public class Enemy : Entity, IPoolable {
     void OnTriggerEnter2D(Collider2D other)
     {
         Projectile projectile = other.GetComponent<Projectile>();
+        if(projectile != null)
+        {
+            RecieveDamage(projectile.Damage);
+            projectile.gameObject.SetActive(false);
+        }
     }
 
     private void OnCollisionStay2D(Collision2D col)
@@ -186,15 +192,20 @@ public class Enemy : Entity, IPoolable {
     
     }
     */
+
     protected override void Die()
     {
-        audioSource.clip = dieClip;
-        audioSource.Play();
+        AudioSource source = ObjectPooler.Instance.SpawnFromPool(nameof(AudioSource), transform.position, transform.rotation).GetComponent<AudioSource>();
+        source.clip = dieClip;
+        source.Play();
+
+        Player.Instance.IncrementCoins(Random.Range(MinCoins, MaxCoins + 1));
+        /*
         for (int i = 0; i < NumOfXPOrbs; i++)
         {
             Vector3 offset = new Vector3(0, Random.Range(0,2), 0);
             Instantiate(Resources.Load("Collectibles/XPOrbContainer"), transform.position+ offset, transform.rotation);
-        }
+        }*/
         base.Die();
     }
 

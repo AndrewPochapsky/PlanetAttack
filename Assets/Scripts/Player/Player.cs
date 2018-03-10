@@ -4,13 +4,17 @@ using UnityEngine;
 
 public class Player : Entity {
 
-    private PlayerUIController controller;
+    public delegate void OnHealthUpdated(int curr, int max);
+    public event OnHealthUpdated OnHealthUpdatedEvent;
+
+    public delegate void OnCoinsUpdated(int value);
+    public event OnCoinsUpdated OnCoinsUpdatedEvent;
+
+    public int Coins { get; protected set; }
 
     public AudioClip levelUpClip, hitClip;
     
     private AudioSource audioSource;
-
-    private LevelManager levelManager;
 
     private float invulnerabilityTimer = 0.5f;
     private bool invulnerable = false;
@@ -41,13 +45,20 @@ public class Player : Entity {
         data.JumpStrength = 15;
         rb = GetComponent<Rigidbody2D>();
         DG = transform.GetChild(0).GetComponent<DetectGround>();
-
-        levelManager = GameObject.FindObjectOfType<LevelManager>();
         audioSource = GetComponent<AudioSource>();
-        controller = GameObject.FindObjectOfType<PlayerUIController>();
     }
 
-	
+    /// <summary>
+    /// Start is called on the frame when a script is enabled just before
+    /// any of the Update methods is called the first time.
+    /// </summary>
+    void Start()
+    {
+        OnHealthUpdatedEvent(data.CurrentHealth, data.MaxHealth);
+        OnCoinsUpdatedEvent(Coins);
+    }
+
+
 	// Update is called once per frame
 	protected override void Update () {
         base.Update();
@@ -63,10 +74,13 @@ public class Player : Entity {
 
     public override void RecieveDamage(int damage)
     {
+        base.RecieveDamage(damage);
+
+        OnHealthUpdatedEvent(data.CurrentHealth, data.MaxHealth);
+
         audioSource.clip = hitClip;
         audioSource.Play();
-
-        base.RecieveDamage(damage);
+        
         StartCoroutine(BecomeInvulerable());
     }
 
@@ -101,7 +115,7 @@ public class Player : Entity {
     protected override void Die()
     {
         DifficultyController.SurvivedTime = Time.timeSinceLevelLoad.ToString("F2");
-        levelManager.LoadLevel("02End");
+        LevelManager.Instance.LoadLevel("_02End");
         base.Die();
     }
     protected override void LevelUp()
@@ -109,7 +123,7 @@ public class Player : Entity {
         base.LevelUp();
         audioSource.clip = levelUpClip;
         audioSource.Play();
-        StartCoroutine(controller.DisplayLevelUpText());
+        //StartCoroutine(controller.DisplayLevelUpText());
 
     }
 
@@ -121,6 +135,12 @@ public class Player : Entity {
         //Damage = 2 + (1 * (Level - 1));
         //weapon.Attacks[0].Damage = (weapon.Attacks[0].Damage + (1 * (Level - 1)));
         data.CurrentHealth = data.MaxHealth;
+    }
+
+    public void IncrementCoins(int value)
+    {
+        Coins += value;
+        OnCoinsUpdatedEvent(Coins);
     }
 
     public void SetInvulnerable(bool value)

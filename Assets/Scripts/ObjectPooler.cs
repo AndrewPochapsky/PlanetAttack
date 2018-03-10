@@ -71,13 +71,12 @@ public class ObjectPooler : MonoBehaviour {
 		objToSpawn.transform.position = position;
 		objToSpawn.transform.rotation = rotation;
 
-		//TODO: Re-enable if I use this 
-		/*IPoolable pooledObject = objToSpawn.GetComponent<IPoolable>();
+		IPoolable pooledObject = objToSpawn.GetComponent<IPoolable>();
 
 		if(pooledObject != null)
 		{
 			pooledObject.OnObjectSpawn();
-		}*/
+		}
 
 
 		poolDictionary[tag].Enqueue(objToSpawn);

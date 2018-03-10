@@ -7,6 +7,7 @@ public class Pistol : RangedWeapon {
 	// Use this for initialization
 	void Start () {
 		FireSpeed = 20f;
+		Damage = 10;
 		FireRate = 0.5f;
 		MaxAmmo = 10000;
 		CurrentAmmo = MaxAmmo;

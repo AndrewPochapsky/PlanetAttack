@@ -33,6 +33,7 @@ public class RangedWeapon : MonoBehaviour {
         GameObject obj = ObjectPooler.Instance.SpawnFromPool("Bullet", transform.position, transform.rotation);
 
         Projectile projectile = obj.GetComponent<Projectile>();
+        projectile.Damage = Damage;
         projectile.rb.velocity = Player.Instance.GetComponent<PlayerMovementController>().arm.mouseDirection * FireSpeed;
 
 
