@@ -80,7 +80,7 @@ public class Player : Entity {
 
         audioSource.clip = hitClip;
         audioSource.Play();
-        
+
         StartCoroutine(BecomeInvulerable());
     }
 
@@ -95,10 +95,15 @@ public class Player : Entity {
         return invulnerable;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerStay2D(Collider2D collision)
     {
-        Collectible collectible = collision.GetComponent<Collectible>();
-        if (collectible && !GetComponent<RangedWeapon>())
+        //Collectible collectible = collision.GetComponent<Collectible>();
+        IInteractable interactable = collision.GetComponent<IInteractable>();
+        if (interactable != null)
+        {
+            interactable.Interact();
+        }
+        /*if (collectible && !GetComponent<RangedWeapon>())
         {
             if(collectible is XPOrb)
             {
@@ -110,8 +115,12 @@ public class Player : Entity {
             collectible.Destroy();
             //Destroy(collectible.gameObject);
             //... more conditions such as health pack
-        }
+        }*/
+       
     }
+
+
+
     protected override void Die()
     {
         DifficultyController.SurvivedTime = Time.timeSinceLevelLoad.ToString("F2");
