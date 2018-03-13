@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Arm : MonoBehaviour {
 
-    Transform weapon;
+   
     public Vector3 mouseDirection;
 
     public float MinClamp { get; set; } = 220;
@@ -16,7 +16,7 @@ public class Arm : MonoBehaviour {
     /// </summary>
     void Start()
     {
-        weapon = transform.GetChild(0);
+      
     }
 
 

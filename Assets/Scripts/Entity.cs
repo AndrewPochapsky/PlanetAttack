@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Entity : MonoBehaviour {
 
-    public EntityData data { get; set; }
+    public EntityData data;
 
     protected DetectGround DG;
     public Rigidbody2D rb { get; protected set; }

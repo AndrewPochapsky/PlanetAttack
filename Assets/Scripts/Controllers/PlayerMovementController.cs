@@ -6,7 +6,7 @@ public class PlayerMovementController : MonoBehaviour {
 
     public enum Direction { LEFT, RIGHT }
 
-    public Arm arm;
+    public Arm arm { get; private set; }
 
     private Direction direction;
 
@@ -19,7 +19,8 @@ public class PlayerMovementController : MonoBehaviour {
 		player = GetComponent<Player>();
 
         arm = transform.GetChild(1).GetComponent<Arm>();
-        weapon = arm.transform.GetChild(0).GetChild(0);
+        if(arm.transform.GetChild(0).childCount > 0)
+            weapon = arm.transform.GetChild(0).GetChild(0);
 
         direction = Direction.RIGHT;
         
@@ -69,7 +70,8 @@ public class PlayerMovementController : MonoBehaviour {
                 //print(weapon.localEulerAngles);
                 direction = Direction.LEFT;
             }
-            weapon.localEulerAngles = new Vector3(0, 0, 90);
+            if(weapon != null)
+                weapon.localEulerAngles = new Vector3(0, 0, 90);
 
         }
         else if (direction == Direction.LEFT)

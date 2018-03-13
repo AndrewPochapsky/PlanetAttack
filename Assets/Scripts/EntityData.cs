@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EntityData {
+public struct EntityData {
     public int CurrentHealth { get; set; }
     public int MaxHealth { get; set; }
     public float Speed { get; set; }

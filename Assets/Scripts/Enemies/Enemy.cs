@@ -5,7 +5,10 @@ using UnityEngine.UI;
 
 //TODO: remove all move related stuff into a new class once the movement has been finalized
 public class Enemy : Entity, IPoolable {
-    //protected Player player { get; set; }
+    
+    public enum EnemyType { Slime }
+
+
     protected int NumOfXPOrbs { get; set; }
     protected int MinCoins { get; set; }
     protected int MaxCoins { get; set; }

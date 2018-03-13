@@ -933,8 +933,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8dde5449e94eac44b92cca2148132bb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyTypes:
-  - Slime
+  enemyTypes: 00000000
   amountToSpawn: 1
   spawnSpeed: 1
 --- !u!114 &114766547830506558
@@ -948,8 +947,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8dde5449e94eac44b92cca2148132bb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyTypes:
-  - 
+  enemyTypes: 00000000
   amountToSpawn: 0
   spawnSpeed: 1
 --- !u!114 &114936745947081998
@@ -963,8 +961,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8dde5449e94eac44b92cca2148132bb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyTypes:
-  - Slime
+  enemyTypes: 00000000
   amountToSpawn: 1
   spawnSpeed: 1
 --- !u!212 &212347187139742882

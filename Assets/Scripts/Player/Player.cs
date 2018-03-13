@@ -18,6 +18,7 @@ public class Player : Entity {
 
     private float invulnerabilityTimer = 0.5f;
     private bool invulnerable = false;
+    public Transform hand;
 
     public static Player Instance;
     
@@ -43,9 +44,10 @@ public class Player : Entity {
         data.MaxHealth = data.CurrentHealth;
         data.Speed = 5;
         data.JumpStrength = 15;
-        rb = GetComponent<Rigidbody2D>();
         DG = transform.GetChild(0).GetComponent<DetectGround>();
         audioSource = GetComponent<AudioSource>();
+
+        EquipWeapon("Pistol");
     }
 
     /// <summary>
@@ -57,12 +59,6 @@ public class Player : Entity {
         OnHealthUpdatedEvent(data.CurrentHealth, data.MaxHealth);
         OnCoinsUpdatedEvent(Coins);
     }
-
-
-	// Update is called once per frame
-	protected override void Update () {
-        base.Update();
-	}
 
 
     /* 
@@ -150,6 +146,31 @@ public class Player : Entity {
     {
         Coins += value;
         OnCoinsUpdatedEvent(Coins);
+    }
+
+    public void EquipWeapon(string name)
+    {
+        GameObject weapon = WeaponManager.Instance.GetWeapon(name);
+        if(weapon != null)
+        {
+            GameObject currentWeapon = null;
+            if(hand.transform.childCount > 0)
+            {
+                currentWeapon = hand.GetChild(0).gameObject;
+            }
+
+            if(currentWeapon != null)
+            {
+                currentWeapon.transform.SetParent(WeaponManager.Instance.transform);
+                currentWeapon.SetActive(false);
+            }
+            weapon.SetActive(true);
+            weapon.transform.SetParent(hand, false);
+        }
+        else
+        {
+            Debug.LogWarning("Weapon: " + name + " can not be found");
+        }
     }
 
     public void SetInvulnerable(bool value)

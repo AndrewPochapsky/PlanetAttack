@@ -4,14 +4,22 @@ using UnityEngine;
 
 public class Pistol : RangedWeapon {
 
-	// Use this for initialization
-	void Start () {
-		FireSpeed = 20f;
-		Damage = 10;
-		FireRate = 0.5f;
-		MaxAmmo = 10000;
-		CurrentAmmo = MaxAmmo;
+    // Use this for initialization
+    void Awake() {
+		name = "Pistol";
+		/*stats.name = "pistol";
+		stats.fireSpeed = 20f;
+        stats.damage = 10;
+        stats.fireRate = 0.5f;
+        stats.maxAmmo = 10000;
+        stats.currentAmmo = stats.maxAmmo;*/
 	}
+
+    public override void Upgrade()
+    {
+       
+    }
+
 
 	
 }

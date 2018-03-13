@@ -2,17 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RangedWeapon : MonoBehaviour {
+public abstract class RangedWeapon : MonoBehaviour {
     
-    public string Name { get; protected set; }
-    public int Damage { get; protected set; }
-    public float KnockBack { get; protected set; }
-    public float FireSpeed { get; protected set; }
-    public float FireRate { get; protected set; }
-    public int MaxAmmo { get; protected set; }
-    public int CurrentAmmo { get; protected set; }
+    public const int MaxUpgradeLevel = 5;
+    [HideInInspector]
+    public new string name;
+    [HideInInspector]
+    public RangedWeaponStats stats;
 
     private float nextFire = 0;
+
+    /// <summary>
+    /// Awake is called when the script instance is being loaded.
+    /// </summary>
+    void Awake()
+    {
+        stats = new RangedWeaponStats();
+    }
 
     /// <summary>
     /// Update is called every frame, if the MonoBehaviour is enabled.
@@ -33,19 +39,21 @@ public class RangedWeapon : MonoBehaviour {
         GameObject obj = ObjectPooler.Instance.SpawnFromPool("Bullet", transform.position, transform.rotation);
 
         Projectile projectile = obj.GetComponent<Projectile>();
-        projectile.Damage = Damage;
-        projectile.rb.velocity = Player.Instance.GetComponent<PlayerMovementController>().arm.mouseDirection * FireSpeed;
+        projectile.Damage = stats.damage;
+        projectile.rb.velocity = Player.Instance.GetComponent<PlayerMovementController>().arm.mouseDirection * stats.fireSpeed;
 
 
-        CurrentAmmo--;
+        stats.currentAmmo--;
 
-        if (CurrentAmmo == 0)
+        if (stats.currentAmmo == 0)
         {
             //Destroy weapon, replace with regular pistol
         }
 
-        nextFire = Time.time + FireRate;
+        nextFire = Time.time + stats.fireRate;
     }
+
+    public abstract void Upgrade();
 
 
 }
