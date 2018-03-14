@@ -11,8 +11,8 @@ public class PlayerUIController : MonoBehaviour {
     public TextMeshProUGUI healthText, coinsText, timeText;
 
 	// Use this for initialization
-	void Awake () {
-      
+	void Start () {
+
         Player.Instance.OnHealthUpdatedEvent += OnHealthUpdated;
         Player.Instance.OnCoinsUpdatedEvent += OnCoinsUpdated;
   	}

@@ -46,6 +46,8 @@ public class Player : Entity {
         data.JumpStrength = 15;
         DG = transform.GetChild(0).GetComponent<DetectGround>();
         audioSource = GetComponent<AudioSource>();
+
+        EquipWeapon(nameof(Pistol));
     }
 
     /// <summary>
@@ -57,7 +59,7 @@ public class Player : Entity {
         OnHealthUpdatedEvent(data.CurrentHealth, data.MaxHealth);
         OnCoinsUpdatedEvent(Coins);
 
-        EquipWeapon(nameof(Pistol));
+      
     }
 
     public override void RecieveDamage(int damage)

@@ -21,7 +21,6 @@ public class WeaponManager : MonoBehaviour {
 		}
 		else
 		{
-			print("this");
 			Instance = this;
 		}
 		weaponStats = Resources.Load<WeaponStatsSO>("ScriptableObjects/WeaponStats");
@@ -32,7 +31,9 @@ public class WeaponManager : MonoBehaviour {
 		foreach(Object obj in objects)
 		{
 			GameObject weapon = (GameObject)obj;
-			weapon = Instantiate(weapon, transform.position, transform.rotation, this.transform);
+			weapon = Instantiate(weapon);
+			weapon.transform.position = transform.position;
+			weapon.transform.SetParent(this.transform);
 			weapon.SetActive(false);
 			RangedWeapon rangedWeapon = weapon.GetComponent<RangedWeapon>();
 			RangedWeaponStats stats = new RangedWeaponStats();
