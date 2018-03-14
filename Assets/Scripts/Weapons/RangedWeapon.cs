@@ -5,8 +5,6 @@ using UnityEngine;
 public class RangedWeapon : MonoBehaviour {
     
     [HideInInspector]
-    public new string name;
-    [HideInInspector]
     public RangedWeaponStats stats;
 
     private float nextFire = 0;

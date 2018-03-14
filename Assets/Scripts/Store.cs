@@ -19,9 +19,13 @@ public class Store : MonoBehaviour, IInteractable {
 
     public void Interact()
     {
-		if(Input.GetKeyDown(KeyCode.E))
+		//TODO: create some sort of global bool to stop stuff from happening when interacting with store.
+		//Time.timeScale = 0 doesnt work since it prevents this interaction with continuing when it is.
+		if(Input.GetKey(KeyCode.E))
 		{
-			storeWindow.gameObject.SetActive(!storeWindow.gameObject.activeInHierarchy);
+			bool value = !storeWindow.gameObject.activeInHierarchy;
+			storeWindow.gameObject.SetActive(value);
+			
 		}
 
     }

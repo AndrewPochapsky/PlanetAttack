@@ -2,15 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Pistol : RangedWeapon {
+public class Rifle : RangedWeapon {
 
     public override void Upgrade()
     {
-		base.Upgrade();
-		CalculateUpgradeCost();
-       	print("Pistol Upgraded!");
+        base.Upgrade();
+        CalculateUpgradeCost();
+        print("Rifle Upgraded!");
     }
-
-
-	
 }

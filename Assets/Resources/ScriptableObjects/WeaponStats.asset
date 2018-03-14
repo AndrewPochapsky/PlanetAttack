@@ -23,3 +23,14 @@ MonoBehaviour:
     upgradeIncrement: 125
     currentUpgradeCost: 0
     currentAmmo: 10000
+  - name: Rifle
+    damage: 10
+    knockBack: 0
+    fireSpeed: 20
+    fireRate: 0.5
+    maxAmmo: 10000
+    upgradeLevel: 1
+    baseUpgradeCost: 150
+    upgradeIncrement: 200
+    currentUpgradeCost: 0
+    currentAmmo: 10000

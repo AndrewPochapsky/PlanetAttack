@@ -21,6 +21,7 @@ public class WeaponManager : MonoBehaviour {
 		}
 		else
 		{
+			print("this");
 			Instance = this;
 		}
 		weaponStats = Resources.Load<WeaponStatsSO>("ScriptableObjects/WeaponStats");
@@ -37,7 +38,7 @@ public class WeaponManager : MonoBehaviour {
 			RangedWeaponStats stats = new RangedWeaponStats();
 			foreach(RangedWeaponStats s in weaponStats.stats)
 			{
-				if(s.name == rangedWeapon.name)
+				if(s.name == rangedWeapon.GetType().Name)
 				{
 					stats = s;
 					break;
@@ -55,7 +56,7 @@ public class WeaponManager : MonoBehaviour {
 		foreach(RangedWeapon weapon in weapons)
 		{
 			//print(weapon.name);
-			if(weapon.name == tag)
+			if(weapon.stats.name == tag)
 			{
 				//Make sure that the ammo is reset
                 weapon.stats.currentAmmo = weapon.stats.maxAmmo;
