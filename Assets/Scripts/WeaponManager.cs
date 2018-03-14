@@ -44,22 +44,22 @@ public class WeaponManager : MonoBehaviour {
 				}
 			}
 			rangedWeapon.stats = stats;
-
+			rangedWeapon.CalculateUpgradeCost();
 			weapons.Add(rangedWeapon);
 			
 		}
 	}
 
-	public GameObject GetWeapon(string tag)
+	public RangedWeapon GetWeapon(string tag)
 	{
 		foreach(RangedWeapon weapon in weapons)
 		{
-			print(weapon.name);
+			//print(weapon.name);
 			if(weapon.name == tag)
 			{
 				//Make sure that the ammo is reset
                 weapon.stats.currentAmmo = weapon.stats.maxAmmo;
-                return weapon.gameObject;
+                return weapon;
 			}
 		}
 		return null;

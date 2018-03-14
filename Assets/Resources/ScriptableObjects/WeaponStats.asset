@@ -18,5 +18,8 @@ MonoBehaviour:
     fireSpeed: 20
     fireRate: 0.5
     maxAmmo: 10000
-    currentAmmo: 10000
     upgradeLevel: 1
+    baseUpgradeCost: 100
+    upgradeIncrement: 125
+    currentUpgradeCost: 0
+    currentAmmo: 10000

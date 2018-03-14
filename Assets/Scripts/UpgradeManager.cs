@@ -4,19 +4,18 @@ using UnityEngine;
 
 public class UpgradeManager : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    public const int MaxUpgradeLevel = 5;
 
-	public void Upgrade(string _weapon)
+	public void Upgrade(string tag)
 	{
-		//Type type = Type.GetType(_weapon);
-		//RangedWeapon weapon = GameObject.FindObjectOfType<>();
+		RangedWeapon weapon = WeaponManager.Instance.GetWeapon(tag);
+		if(weapon != null)
+		{
+			weapon.Upgrade();
+		}
+		else
+		{
+            Debug.LogWarning("Weapon: " + name + " can not be found");
+        }
 	}
 }

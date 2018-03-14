@@ -20,8 +20,8 @@ public class Enemy : Entity, IPoolable {
 
     private Text levelText;
 
-    Transform nearestWaypoint;
-    Vector2 moveDirection;
+    //Transform nearestWaypoint;
+    //Vector2 moveDirection;
 
 
     // Use this for initialization
@@ -49,7 +49,7 @@ public class Enemy : Entity, IPoolable {
 	
     protected override void Update()
     {
-        transform.Translate(moveDirection* data.Speed * Time.deltaTime);
+        //transform.Translate(moveDirection* data.Speed * Time.deltaTime);
 
         levelText.text = data.Level.ToString();
         base.Update();
@@ -90,7 +90,7 @@ public class Enemy : Entity, IPoolable {
            
         }
     }
-
+    /*
     //TODO actually remove this garbage and make it work
     private Vector2 ChooseMoveDirection()
     {
@@ -129,7 +129,7 @@ public class Enemy : Entity, IPoolable {
         
         print("rip");
         return Vector2.zero;
-    }
+    }*/
     /*
     private Transform closestWaypoint()
     {

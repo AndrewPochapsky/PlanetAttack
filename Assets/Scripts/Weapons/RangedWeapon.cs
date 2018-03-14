@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class RangedWeapon : MonoBehaviour {
+public class RangedWeapon : MonoBehaviour {
     
-    public const int MaxUpgradeLevel = 5;
     [HideInInspector]
     public new string name;
     [HideInInspector]
@@ -53,7 +52,15 @@ public abstract class RangedWeapon : MonoBehaviour {
         nextFire = Time.time + stats.fireRate;
     }
 
-    public abstract void Upgrade();
+    public virtual void Upgrade()
+    {
+        stats.upgradeLevel++;
+    }
+
+    public virtual void CalculateUpgradeCost()
+    {
+        stats.currentUpgradeCost = stats.baseUpgradeCost + (stats.upgradeIncrement * (stats.upgradeLevel - 1));
+    }
 
 
 }

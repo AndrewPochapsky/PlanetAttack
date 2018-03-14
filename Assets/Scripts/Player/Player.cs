@@ -60,14 +60,6 @@ public class Player : Entity {
         OnCoinsUpdatedEvent(Coins);
     }
 
-
-    /* 
-    private void Attack(Attack attack, string suffix)
-    {
-        weapon.anim.SetTrigger(attack.Name+suffix);
-        LastAttack = attack;
-    }*/
-
     public override void RecieveDamage(int damage)
     {
         base.RecieveDamage(damage);
@@ -148,9 +140,13 @@ public class Player : Entity {
         OnCoinsUpdatedEvent(Coins);
     }
 
+    /// <summary>
+    /// Equips the weapon of 'name' by getting it from WeaponManager
+    /// </summary>
+    /// <param name="name">The weapon to equip</param>
     public void EquipWeapon(string name)
     {
-        GameObject weapon = WeaponManager.Instance.GetWeapon(name);
+        RangedWeapon weapon = WeaponManager.Instance.GetWeapon(name);
         if(weapon != null)
         {
             GameObject currentWeapon = null;
@@ -161,23 +157,15 @@ public class Player : Entity {
 
             if(currentWeapon != null)
             {
-                currentWeapon.transform.SetParent(WeaponManager.Instance.transform);
+                currentWeapon.transform.SetParent(WeaponManager.Instance.transform, false);
                 currentWeapon.SetActive(false);
             }
-            weapon.SetActive(true);
+            weapon.gameObject.SetActive(true);
             weapon.transform.SetParent(hand, false);
         }
         else
         {
-            Debug.LogWarning("Weapon: " + name + " can not be found");
+            Debug.LogWarning("Weapon: " + name + " can not be found");//
         }
-    }
-
-    public void SetInvulnerable(bool value)
-    {
-        invulnerable = value;
-    }
-
-    
-    
+    }    
 }

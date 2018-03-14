@@ -6,6 +6,7 @@ public class Pistol : RangedWeapon {
 
     // Use this for initialization
     void Awake() {
+		//DO NOT REMOVE THIS 
 		name = "Pistol";
 		/*stats.name = "pistol";
 		stats.fireSpeed = 20f;
@@ -17,7 +18,9 @@ public class Pistol : RangedWeapon {
 
     public override void Upgrade()
     {
-       
+		base.Upgrade();
+		CalculateUpgradeCost();
+       	print("Pistol Upgraded!");
     }
 
 

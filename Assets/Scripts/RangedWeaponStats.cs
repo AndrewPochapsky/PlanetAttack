@@ -8,9 +8,10 @@ public struct RangedWeaponStats {
 	//public SpriteRenderer spriteRenderer;
     public int damage;
     public float knockBack; 
-    public float fireSpeed;
-    public float fireRate;
+    public float fireSpeed, fireRate;
     public int maxAmmo;
-    public int currentAmmo;
-    public int upgradeLevel;
+    public int upgradeLevel, baseUpgradeCost, upgradeIncrement;
+	//These are calculated in script
+	[HideInInspector]
+	public int currentUpgradeCost, currentAmmo;
 }
