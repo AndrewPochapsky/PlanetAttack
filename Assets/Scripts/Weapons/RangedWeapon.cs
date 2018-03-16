@@ -53,6 +53,7 @@ public class RangedWeapon : MonoBehaviour {
     public virtual void Upgrade()
     {
         stats.upgradeLevel++;
+        Player.Instance.IncrementCoins(-stats.currentUpgradeCost);
     }
 
     public virtual void CalculateUpgradeCost()
