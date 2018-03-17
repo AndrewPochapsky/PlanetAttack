@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -21,7 +22,8 @@ public class Enemy : Entity, IPoolable {
     private Text levelText;
 
     //Transform nearestWaypoint;
-    Vector2 initialDirection;
+    //Vector2 initialDirection;
+    Vector2 currentDirection;
 
 
     // Use this for initialization
@@ -45,7 +47,7 @@ public class Enemy : Entity, IPoolable {
     public virtual void OnObjectSpawn()
     {
         data.CurrentHealth = data.MaxHealth;
-        initialDirection = GetInitialDirection();
+        currentDirection = GetInitialDirection();
         state = State.Moving;
     }
 
@@ -57,8 +59,7 @@ public class Enemy : Entity, IPoolable {
         switch (state)
         {
             case State.Moving:
-                print("Moving");
-                transform.Translate(initialDirection * data.Speed * Time.deltaTime);
+                transform.Translate(currentDirection * data.Speed * Time.deltaTime);
                 break;
 
             case State.Attacking:
@@ -78,7 +79,29 @@ public class Enemy : Entity, IPoolable {
         {
             RecieveDamage(projectile.Damage);
             projectile.gameObject.SetActive(false);
+
+            if(CheckIfRotate(projectile))
+            {
+                Rotate();
+            }
         }
+    }
+
+    //TOOD: rotate sprites and whatever ever else has to as well
+    protected void Rotate()
+    {
+        currentDirection = -currentDirection;
+    }
+
+    /// <summary>
+    /// Used to determine if the enemy should change direction when hit with projectile
+    /// </summary>
+    /// <param name="projectile">The fired projectile</param>
+    /// <returns> Return true when enemy and player are facing same direction</returns>
+    protected virtual bool CheckIfRotate(Projectile projectile)
+    {
+        return (projectile.Direction == PlayerMovementController.Direction.LEFT && currentDirection == Vector2.left) 
+            || (projectile.Direction == PlayerMovementController.Direction.RIGHT && currentDirection == Vector2.right);
     }
 
     private void OnCollisionStay2D(Collision2D col)
@@ -101,7 +124,7 @@ public class Enemy : Entity, IPoolable {
         source.clip = dieClip;
         source.Play();
 
-        Player.Instance.IncrementCoins(Random.Range(data.MinCoins, data.MaxCoins + 1));
+        Player.Instance.IncrementCoins(UnityEngine.Random.Range(data.MinCoins, data.MaxCoins + 1));
         /*
         for (int i = 0; i < NumOfXPOrbs; i++)
         {
@@ -125,7 +148,7 @@ public class Enemy : Entity, IPoolable {
 
     private Vector2 GetInitialDirection()
     {
-        int num = Random.Range(0, 2);
+        int num = UnityEngine.Random.Range(0, 2);
         if(num == 0)
         {
             return Vector2.right;

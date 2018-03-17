@@ -8,7 +8,7 @@ public class PlayerMovementController : MonoBehaviour {
 
     public Arm arm { get; private set; }
 
-    private Direction direction;
+    public static Direction direction { get; private set; }
 
 	Player player;
     

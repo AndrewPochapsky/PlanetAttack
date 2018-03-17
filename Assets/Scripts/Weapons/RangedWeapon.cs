@@ -30,12 +30,12 @@ public class RangedWeapon : MonoBehaviour {
 
     protected virtual void Fire()
     {
-        //Fire
         //TODO: have some way of specifying the ammo type, probably with an enum
         //so add a new property called AmmoType, replace "Bullet" with that
         GameObject obj = ObjectPooler.Instance.SpawnFromPool("Bullet", transform.position, transform.rotation);
 
         Projectile projectile = obj.GetComponent<Projectile>();
+        projectile.Direction = PlayerMovementController.direction;
         projectile.Damage = stats.damage;
         projectile.rb.velocity = Player.Instance.GetComponent<PlayerMovementController>().arm.mouseDirection * stats.fireSpeed;
 

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stats:
   - name: Pistol
-    damage: 10
+    damage: 0
     knockBack: 0
     fireSpeed: 20
     fireRate: 0.5
