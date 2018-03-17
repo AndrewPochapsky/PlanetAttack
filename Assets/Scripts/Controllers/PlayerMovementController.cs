@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,9 +14,17 @@ public class PlayerMovementController : MonoBehaviour {
 	Player player;
     
     Transform weapon;
+    Rigidbody2D rb;
+
+
+    float hoverAcceleration = 10f;
+    float maxHoverHeightIncrease = 0.5f;
+    float maxHoverHeight;
+    float hoverDuration = 2f;
 
 	// Use this for initialization
 	void Start () {
+        rb = GetComponent<Rigidbody2D>();
 		player = GetComponent<Player>();
 
         arm = transform.GetChild(1).GetComponent<Arm>();
@@ -23,13 +32,13 @@ public class PlayerMovementController : MonoBehaviour {
             weapon = arm.transform.GetChild(0).GetChild(0);
 
         direction = Direction.RIGHT;
-        
-        
+
+       
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		Move();
+        Move();
         CheckIfReflectPlayer();
 	}
 
@@ -44,7 +53,13 @@ public class PlayerMovementController : MonoBehaviour {
         {
             transform.Translate(Vector2.right * player.data.Speed * Time.deltaTime);
         }
+        if(Input.GetKey(KeyCode.Space))
+        {
+            rb.AddRelativeForce(Vector2.up * 10);
+        }
     }
+
+   
 
     //TODO: Eventually look at removing the "speed switching" when the mouse is == to clamp position
     //TODO: Change the player's sprites to rotate

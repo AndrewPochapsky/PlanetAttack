@@ -42,6 +42,7 @@ GameObject:
   - component: {fileID: 114550658514136412}
   - component: {fileID: 61608722712120424}
   - component: {fileID: 82593155485701662}
+  - component: {fileID: 114813786351028610}
   m_Layer: 8
   m_Name: Slime
   m_TagString: Enemy
@@ -216,6 +217,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 352df17d0d78d6d47bd9431328f00050, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data:
+    Name: 
+    CurrentHealth: 0
+    MaxHealth: 0
+    Speed: 0
+    JumpStrength: 0
+    Level: 0
+    CurrentXP: 0
+    RequiredXP: 0
+    Damage: 0
+    MinCoins: 0
+    MaxCoins: 0
   hitClip: {fileID: 8300000, guid: d687be713449c4a46a72bd0a08b4bfe7, type: 3}
   dieClip: {fileID: 8300000, guid: e7138529d4c88f64b804418c5c0aaa7a, type: 3}
 --- !u!114 &114552651301452352
@@ -288,6 +301,17 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: 1
+--- !u!114 &114813786351028610
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1114579706900164}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95a56b07b8430a24e8aa9192cc9715f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!212 &212776716350362040
 SpriteRenderer:
   m_ObjectHideFlags: 1

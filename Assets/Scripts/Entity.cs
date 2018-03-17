@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(FauxGravityBody))]
 public class Entity : MonoBehaviour {
 
     public EntityData data;
@@ -26,11 +27,6 @@ public class Entity : MonoBehaviour {
         {
             LevelUp();
         }
-    }
-
-    protected virtual void FixedUpdate()
-    {
-        Planet.Instance.InduceGravity(this);
     }
 
     protected virtual void Die()

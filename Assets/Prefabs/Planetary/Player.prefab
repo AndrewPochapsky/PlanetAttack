@@ -58,6 +58,7 @@ GameObject:
   - component: {fileID: 61739398051779348}
   - component: {fileID: 114342417063457168}
   - component: {fileID: 114195820407138088}
+  - component: {fileID: 114873244828171250}
   - component: {fileID: 82401579877010030}
   m_Layer: 9
   m_Name: Player
@@ -363,6 +364,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9805bbdd660e9c643bcd78242ad46ebf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data:
+    Name: 
+    CurrentHealth: 0
+    MaxHealth: 0
+    Speed: 0
+    JumpStrength: 0
+    Level: 0
+    CurrentXP: 0
+    RequiredXP: 0
+    Damage: 0
+    MinCoins: 0
+    MaxCoins: 0
   levelUpClip: {fileID: 8300000, guid: 42352e872d0056245aab7591f905de4d, type: 3}
   hitClip: {fileID: 8300000, guid: d3ef754fa5fb15a49b802ba73d1f9c43, type: 3}
   hand: {fileID: 4723096562370780}
@@ -375,6 +388,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 67f1fddd86cebf344af26e48b2d08979, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114873244828171250
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1800647148127588}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95a56b07b8430a24e8aa9192cc9715f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &114995813060338270

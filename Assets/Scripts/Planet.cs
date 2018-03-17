@@ -5,7 +5,7 @@ using UnityEngine;
 public class Planet : MonoBehaviour {
     
     
-    readonly float gravity = 175;
+    readonly float gravity = 50;
 
     #region Singleton
 
@@ -28,10 +28,10 @@ public class Planet : MonoBehaviour {
 	
     public void InduceGravity(Entity entity)
     {
-        Vector3 directionToPlanet = transform.position - entity.transform.position;
+        /*Vector3 directionToPlanet = transform.position - entity.transform.position;
         directionToPlanet.Normalize();
         Vector3 gravityAcc = directionToPlanet * gravity;
 
-        entity.rb.AddForce(gravityAcc, ForceMode2D.Force);
+        entity.rb.AddForce(gravityAcc, ForceMode2D.Force);*/
     }
 }
