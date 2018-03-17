@@ -10,10 +10,13 @@ public class ObjectPooler : MonoBehaviour {
 		public string tag;
 		public GameObject prefab;
 		public int size;
+		[Header("Optional:")]
 		public Transform parent;
 	}
 
 	public static ObjectPooler Instance;
+
+	EnemyStatsSO enemyStats;
 
 	/// <summary>
 	/// Awake is called when the script instance is being loaded.
@@ -30,6 +33,7 @@ public class ObjectPooler : MonoBehaviour {
 		}
 
         poolDictionary = new Dictionary<string, Queue<GameObject>>();
+		enemyStats = Resources.Load<EnemyStatsSO>("ScriptableObjects/EnemyStats");
 
         foreach (Pool pool in pools)
         {
@@ -38,6 +42,20 @@ public class ObjectPooler : MonoBehaviour {
             for (int i = 0; i < pool.size; i++)
             {
                 GameObject obj = Instantiate(pool.prefab);
+				
+				Enemy enemy = obj.GetComponent<Enemy>();
+				if(enemy != null)
+				{
+					foreach(EntityData data in enemyStats.data)
+					{
+						if(data.Name == enemy.GetType().Name)
+						{
+							enemy.data = data;
+							break;
+						}
+					}
+				}
+
                 if (pool.parent != null)
                     obj.transform.SetParent(pool.parent);
                 obj.SetActive(false);

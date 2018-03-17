@@ -7,15 +7,6 @@ public class Slime : Enemy {
     protected override void Awake()
     {
         base.Awake();
-        data.JumpStrength = 2f;
-        data.Level = 1;
-        data.RequiredXP = 999;
-        data.MaxHealth = 10;
-        data.Speed = 2;
-        Damage = 2;
-
-        MinCoins = 5;
-        MaxCoins = 10;
 
         data.CurrentHealth = data.MaxHealth;
 
@@ -24,17 +15,7 @@ public class Slime : Enemy {
         DG = transform.GetChild(0).GetComponent<DetectGround>();
     }
 
-    public override void OnObjectSpawn()
-    {
-        data.JumpStrength = 2f;
-        data.Level = 1;
-        data.RequiredXP = 999;
-        data.MaxHealth = 10;
-        data.Speed = 2;
-        Damage = 2;
-
-        data.CurrentHealth = data.MaxHealth;
-    }
+   
 
 
 }

@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-//TODO: remove all move related stuff into a new class once the movement has been finalized
+//TODO: add functionality such that the enemy rotates when hit from behind
 public class Enemy : Entity, IPoolable {
     
     public enum EnemyType { Slime }
+    public enum State { Moving, Attacking }
 
+    private State state;
 
     protected int NumOfXPOrbs { get; set; }
-    protected int MinCoins { get; set; }
-    protected int MaxCoins { get; set; }
 
     protected List<Transform> waypoints;
 
@@ -21,7 +21,7 @@ public class Enemy : Entity, IPoolable {
     private Text levelText;
 
     //Transform nearestWaypoint;
-    //Vector2 moveDirection;
+    Vector2 initialDirection;
 
 
     // Use this for initialization
@@ -30,38 +30,42 @@ public class Enemy : Entity, IPoolable {
 
         audioSource = GetComponent<AudioSource>();
         data.CurrentXP = DifficultyController.CurrentXP;
-
-        waypoints = new List<Transform>();
-        GameObject[] wayPointObjects= GameObject.FindGameObjectsWithTag("Waypoint");
-        foreach(GameObject obj in wayPointObjects)
-        {
-            Transform wp = obj.transform;
-            waypoints.Add(wp);
-        }
-        //print(waypoints.Count);
-        //InvokeRepeating("IncrementXP", 0, 1);
-        
-        //nearestWaypoint = closestWaypoint();
-        //print(nearestWaypoint.ToString());
-        //moveDirection = ChooseMoveDirection();
         levelText = canvas.transform.GetChild(0).GetComponent<Text>();
     }
 	
     protected override void Update()
     {
-        //transform.Translate(moveDirection* data.Speed * Time.deltaTime);
-
-        levelText.text = data.Level.ToString();
         base.Update();
+
+        HandleStates();
         
     }
 
     //Reset everything
     public virtual void OnObjectSpawn()
     {
-        
+        data.CurrentHealth = data.MaxHealth;
+        initialDirection = GetInitialDirection();
+        state = State.Moving;
     }
-	
+
+    //Super ghetto implementation of state pattern
+    //Idealy should use a class for each state: 
+    //http://www.gameprogrammingpatterns.com/state.html
+    private void HandleStates()
+    {
+        switch (state)
+        {
+            case State.Moving:
+                print("Moving");
+                transform.Translate(initialDirection * data.Speed * Time.deltaTime);
+                break;
+
+            case State.Attacking:
+                break;
+        }
+    }
+
     /// <summary>
     /// Sent when another object enters a trigger collider attached to this
     /// object (2D physics only).
@@ -85,116 +89,11 @@ public class Enemy : Entity, IPoolable {
             if (!player.IsInvulnerable())
             {
                 print(col.gameObject.ToString() + " taking damage");
-                player.RecieveDamage(Damage);
+                player.RecieveDamage(data.Damage);
             }
            
         }
     }
-    /*
-    //TODO actually remove this garbage and make it work
-    private Vector2 ChooseMoveDirection()
-    {
-
-        print("reached destination");
-        if (transform.position.x < nearestWaypoint.position.x && transform.position.y < 0f)//
-        {
-            print("1");
-            //transform.Translate(Vector2.left * Speed * Time.deltaTime);
-            return Vector2.left;
-            
-        }
-        
-        else if (transform.position.x < nearestWaypoint.position.x && transform.position.y > 0)
-        {
-            print("2");
-            //transform.Translate(Vector2.right * Speed * Time.deltaTime);
-            return Vector2.right;
-        }
-       
-
-        else if (transform.position.x > nearestWaypoint.position.x && transform.position.y > 0f)
-        {
-            print("3");
-            //transform.Translate(Vector2.left * Speed * Time.deltaTime);
-            return Vector2.left;
-            
-        }
-       
-        else if (transform.position.x > nearestWaypoint.position.x && transform.position.y < 0)//
-        {
-            print("4");
-            //transform.Translate(Vector2.right * Speed * Time.deltaTime);
-            return Vector2.right;
-        }
-        
-        print("rip");
-        return Vector2.zero;
-    }*/
-    /*
-    private Transform closestWaypoint()
-    {
-        //Transform[] closestWaypoints = new Transform[2];
-        Transform closestWaypoint = null;
-        
-        Transform secondClosestWaypoint = null;
-        float distance;
-        float shortestDistance=9999;
-
-
-        foreach(Transform wp in waypoints)
-        {
-            distance = Vector3.Distance(wp.position, transform.position);
-            if (Mathf.Round(wp.position.x) != Mathf.Round(transform.position.x))
-            {
-                if (distance < shortestDistance)
-                {
-                    shortestDistance = distance;
-
-                    closestWaypoint = wp;
-                }
-            }
-            
-        }
-        shortestDistance = 9999;
-        foreach(Transform wp in waypoints)
-        {
-
-            if (closestWaypoint != null)
-            {
-                if (wp.position != closestWaypoint.position && Mathf.Round(wp.position.x) != Mathf.Round(transform.position.x))
-                {
-                    distance = Vector3.Distance(wp.position, transform.position);
-                    if (distance < shortestDistance)
-                    {
-                        shortestDistance = distance;
-                        secondClosestWaypoint = wp;
-                    }
-                }
-            }
-           
-           
-        }
-
-        if (closestWaypoint != null)
-        {
-            float firstDistance = Vector2.Distance(closestWaypoint.position, player.transform.position);
-            float secondDistance = Vector2.Distance(secondClosestWaypoint.position, player.transform.position);
-            if (firstDistance > secondDistance)
-            {
-                return secondClosestWaypoint;
-            }
-            else
-            {
-                return closestWaypoint;
-            }
-        }
-        else
-        {
-            return null;
-        }
-    
-    }
-    */
 
     protected override void Die()
     {
@@ -202,7 +101,7 @@ public class Enemy : Entity, IPoolable {
         source.clip = dieClip;
         source.Play();
 
-        Player.Instance.IncrementCoins(Random.Range(MinCoins, MaxCoins + 1));
+        Player.Instance.IncrementCoins(Random.Range(data.MinCoins, data.MaxCoins + 1));
         /*
         for (int i = 0; i < NumOfXPOrbs; i++)
         {
@@ -222,6 +121,19 @@ public class Enemy : Entity, IPoolable {
         audioSource.clip = hitClip;
         audioSource.Play();
         base.RecieveDamage(damage);
+    }
+
+    private Vector2 GetInitialDirection()
+    {
+        int num = Random.Range(0, 2);
+        if(num == 0)
+        {
+            return Vector2.right;
+        }
+        else
+        {
+            return Vector2.left;
+        }
     }
 }
     

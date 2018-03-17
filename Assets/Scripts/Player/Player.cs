@@ -48,6 +48,7 @@ public class Player : Entity {
         audioSource = GetComponent<AudioSource>();
 
         EquipWeapon(nameof(Pistol));
+
     }
 
     /// <summary>

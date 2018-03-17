@@ -11,9 +11,6 @@ public class Entity : MonoBehaviour {
     protected SpriteRenderer sp;
     protected Canvas canvas;
 
-    //TODO: move to Enemy Script
-    protected int Damage { get; set; }
-
     protected virtual void Awake()
     {
         data = new EntityData();
@@ -80,7 +77,7 @@ public class Entity : MonoBehaviour {
         data.RequiredXP = 50 + (10 * (data.Level - 1));
         data.MaxHealth = 5 + (3 * (data.Level - 1));
         data.Speed = 2 + (0.5f * (data.Level - 1));
-        Damage = 2 + (1 * (data.Level - 1));
+        data.Damage = 2 + (1 * (data.Level - 1));
 
         data.CurrentHealth = data.MaxHealth;
 
