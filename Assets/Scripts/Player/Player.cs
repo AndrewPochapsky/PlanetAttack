@@ -44,7 +44,7 @@ public class Player : Entity {
         data.MaxHealth = data.CurrentHealth;
         data.Speed = 5;
         data.JumpStrength = 15;
-        DG = transform.GetChild(0).GetComponent<DetectGround>();
+        
         audioSource = GetComponent<AudioSource>();
 
         EquipWeapon(nameof(Pistol));

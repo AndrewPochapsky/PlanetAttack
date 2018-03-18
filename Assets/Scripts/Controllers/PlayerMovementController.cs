@@ -7,7 +7,13 @@ public class PlayerMovementController : MonoBehaviour {
 
     public enum Direction { LEFT, RIGHT }
 
+    public enum HoverState { Ready, Recharging, CoolDown }
+
+    HoverState hoverState;
+
     public Arm arm { get; private set; }
+
+    private DetectGround DG;
 
     public static Direction direction { get; private set; }
 
@@ -16,31 +22,44 @@ public class PlayerMovementController : MonoBehaviour {
     Transform weapon;
     Rigidbody2D rb;
 
+    float maxHoverFuel = 27f;
+    float fuelDrainAmount = 48;
+    float fuelGainAmount = 40;
+    float currentHoverFuel;
+    float hoverAcceleration = 15;
+    float hoverCDDuration = 2f;
 
-    float hoverAcceleration = 10f;
-    float maxHoverHeightIncrease = 0.5f;
-    float maxHoverHeight;
-    float hoverDuration = 2f;
-
-	// Use this for initialization
-	void Start () {
+    private void Awake()
+    {
+        DG = transform.GetChild(0).GetComponent<DetectGround>();
         rb = GetComponent<Rigidbody2D>();
-		player = GetComponent<Player>();
+        player = GetComponent<Player>();
+    }
 
+    // Use this for initialization
+    void Start () {
         arm = transform.GetChild(1).GetComponent<Arm>();
         if(arm.transform.GetChild(0).childCount > 0)
             weapon = arm.transform.GetChild(0).GetChild(0);
 
         direction = Direction.RIGHT;
-
-       
+        hoverState = HoverState.Ready;
+        currentHoverFuel = maxHoverFuel;
 	}
 	
 	// Update is called once per frame
 	void Update () {
+        //print("Current Fuel: " + currentHoverFuel);
+        print("Hover state: " + hoverState);
         Move();
         CheckIfReflectPlayer();
+        
 	}
+
+    private void FixedUpdate()
+    {
+        Hover();
+    }
 
 
     private void Move()
@@ -53,13 +72,48 @@ public class PlayerMovementController : MonoBehaviour {
         {
             transform.Translate(Vector2.right * player.data.Speed * Time.deltaTime);
         }
-        if(Input.GetKey(KeyCode.Space))
+    }
+
+    private void Hover()
+    {
+        if(Input.GetKey(KeyCode.Space) && hoverState == HoverState.Ready)
         {
-            rb.AddRelativeForce(Vector2.up * 10);
+            if (currentHoverFuel > 0)
+            {
+                rb.AddRelativeForce(Vector2.up * hoverAcceleration);
+                currentHoverFuel -= fuelDrainAmount * Time.fixedDeltaTime;
+            }
+            else
+            {
+                //Fuel fully drained, put hover on cooldown
+                hoverState = HoverState.CoolDown;
+                StartCoroutine(RechargeCD(hoverCDDuration));
+            }
+        }
+ 
+        if (DG.IsGrounded)
+        {  
+            //Fuel has been recharged, hover is ready
+            if(currentHoverFuel >= maxHoverFuel)
+            {
+                hoverState = HoverState.Ready;
+            }
+            if (hoverState == HoverState.Recharging && currentHoverFuel < maxHoverFuel)
+            {
+                currentHoverFuel += fuelGainAmount * Time.deltaTime;
+                if (currentHoverFuel > maxHoverFuel)
+                {
+                    currentHoverFuel = maxHoverFuel;
+                }
+            }
         }
     }
 
-   
+    private IEnumerator RechargeCD(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        hoverState = HoverState.Recharging;
+    }
 
     //TODO: Eventually look at removing the "speed switching" when the mouse is == to clamp position
     //TODO: Change the player's sprites to rotate

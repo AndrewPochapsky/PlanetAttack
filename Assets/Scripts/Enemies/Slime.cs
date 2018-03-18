@@ -12,7 +12,7 @@ public class Slime : Enemy {
 
         NumOfXPOrbs = Random.Range(1, 4);
 
-        DG = transform.GetChild(0).GetComponent<DetectGround>();
+        //DG = transform.GetChild(0).GetComponent<DetectGround>();
     }
 
    

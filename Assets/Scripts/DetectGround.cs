@@ -3,34 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class DetectGround : MonoBehaviour {
-    private bool isGrounded = true;
+    public bool IsGrounded { get; private set; } = true;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.GetComponent<Planet>())
+        if (collision.GetComponent<FauxGravityAttractor>())
         {
-
-            isGrounded = true;
-        }
-       
-      
+            IsGrounded = true;
+        } 
     }
     
     private void OnTriggerExit2D(Collider2D collision)
-    {   
-        if (collision.GetComponent<Planet>())
-        {
-
-            isGrounded = false;
-        }
-        
-       
-
-    }
-
-    public bool getGrounded()
     {
-        return isGrounded;
+        if (collision.GetComponent<FauxGravityAttractor>())
+        {
+            IsGrounded = false;
+        }
     }
-
 }

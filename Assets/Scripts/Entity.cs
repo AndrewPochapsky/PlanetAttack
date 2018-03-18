@@ -7,8 +7,7 @@ public class Entity : MonoBehaviour {
 
     public EntityData data;
 
-    protected DetectGround DG;
-    public Rigidbody2D rb { get; protected set; }
+    //public Rigidbody2D rb { get; protected set; }
     protected SpriteRenderer sp;
     protected Canvas canvas;
 
@@ -16,7 +15,7 @@ public class Entity : MonoBehaviour {
     {
         data = new EntityData();
         sp = GetComponent<SpriteRenderer>();
-        rb = GetComponent<Rigidbody2D>();
+        //rb = GetComponent<Rigidbody2D>();
 
         canvas = transform.GetChild(0).GetComponent<Canvas>();
     }
@@ -32,14 +31,6 @@ public class Entity : MonoBehaviour {
     protected virtual void Die()
     {
         gameObject.SetActive(false);
-    }
-
-    protected void Jump()
-    {
-        if (DG.getGrounded())
-        {
-            rb.AddForce(Vector2.up * data.JumpStrength, ForceMode2D.Impulse);
-        }
     }
 
     public virtual void RecieveDamage(int damage)
