@@ -8,14 +8,23 @@ using DG.Tweening;
 
 public class PlayerUIController : MonoBehaviour {
 
-    public TextMeshProUGUI healthText, coinsText, timeText;
+    public TextMeshProUGUI healthText, coinsText, timeText, ammoText;
 
-	// Use this for initialization
-	void Start () {
+    private void Awake()
+    {
+        
+        foreach (RangedWeapon weapon in WeaponManager.Instance.Weapons)
+        {
+            weapon.OnAmmoUpdatedEvent += OnAmmoUpdated;
+        }
+    }
 
+    // Use this for initialization
+    void Start () {
         Player.Instance.OnHealthUpdatedEvent += OnHealthUpdated;
         Player.Instance.OnCoinsUpdatedEvent += OnCoinsUpdated;
-  	}
+
+    }
 	
 	void Update () {
         timeText.text = Time.timeSinceLevelLoad.ToString("F2");
@@ -29,6 +38,18 @@ public class PlayerUIController : MonoBehaviour {
     private void OnCoinsUpdated(int value)
     {
         coinsText.text = "Coins: " + value;
+    }
+
+    private void OnAmmoUpdated(int current, int max)
+    {
+        if(max == -1)
+        {
+            ammoText.text = "Unlimited";
+        }
+        else
+        {
+            ammoText.text = current + "/" + max;
+        }
     }
 
 }

@@ -4,8 +4,11 @@ using UnityEngine;
 
 [System.Serializable]
 public struct RangedWeaponStats {
+
+    public enum AmmoType { Bullet }
+
     public string name;
-	//public SpriteRenderer spriteRenderer;
+    public AmmoType ammoType;
     public int damage;
     public float knockBack; 
     public float fireSpeed, fireRate;

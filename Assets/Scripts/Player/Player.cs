@@ -35,8 +35,6 @@ public class Player : Entity {
 
         base.Awake();
 
-        //data = new EntityData();
-
         data.Level = 1;
         data.CurrentXP = 0;
         data.RequiredXP = 100 + (25 * (data.Level - 1));
@@ -48,7 +46,6 @@ public class Player : Entity {
         audioSource = GetComponent<AudioSource>();
 
         EquipWeapon(nameof(Pistol));
-
     }
 
     /// <summary>
@@ -165,6 +162,8 @@ public class Player : Entity {
             }
             weapon.gameObject.SetActive(true);
             weapon.transform.SetParent(hand, false);
+
+            weapon.CallAmmoEvent();
         }
         else
         {

@@ -8,7 +8,7 @@ public class WeaponManager : MonoBehaviour {
 
 	WeaponStatsSO weaponStats;
 
-	List<RangedWeapon> weapons;
+	public List<RangedWeapon> Weapons { get; private set; }
 
 	/// <summary>
 	/// Awake is called when the script instance is being loaded.
@@ -25,7 +25,7 @@ public class WeaponManager : MonoBehaviour {
 		}
 		weaponStats = Resources.Load<WeaponStatsSO>("ScriptableObjects/WeaponStats");
 
-		weapons = new List<RangedWeapon>();
+		Weapons = new List<RangedWeapon>();
 		Object[] objects = Resources.LoadAll("Weapons");
 
 		foreach(Object obj in objects)
@@ -47,14 +47,14 @@ public class WeaponManager : MonoBehaviour {
 			}
 			rangedWeapon.stats = stats;
 			rangedWeapon.CalculateUpgradeCost();
-			weapons.Add(rangedWeapon);
+			Weapons.Add(rangedWeapon);
 			
 		}
 	}
 
 	public RangedWeapon GetWeapon(string tag)
 	{
-		foreach(RangedWeapon weapon in weapons)
+		foreach(RangedWeapon weapon in Weapons)
 		{
 			//print(weapon.name);
 			if(weapon.stats.name == tag)
