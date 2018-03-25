@@ -497,19 +497,9 @@ Prefab:
       propertyPath: m_RootOrder
       value: 4
       objectReference: {fileID: 0}
-    - target: {fileID: 114256439551718456, guid: 1db6f97ea2eba0c4c96e6533627453f1,
-        type: 2}
-      propertyPath: pools.Array.data[3].parent
-      value: 
-      objectReference: {fileID: 1254951024}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1db6f97ea2eba0c4c96e6533627453f1, type: 2}
   m_IsPrefabParent: 0
---- !u!4 &1254951024 stripped
-Transform:
-  m_PrefabParentObject: {fileID: 4854280951219638, guid: 1db6f97ea2eba0c4c96e6533627453f1,
-    type: 2}
-  m_PrefabInternal: {fileID: 1254951023}
 --- !u!1 &1268894592
 GameObject:
   m_ObjectHideFlags: 0
@@ -805,12 +795,12 @@ Prefab:
     - target: {fileID: 224574335099478494, guid: e4ce9573030457b4b9d1d73c0edd1fca,
         type: 2}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 224574335099478494, guid: e4ce9573030457b4b9d1d73c0edd1fca,
         type: 2}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 224313538095155734, guid: e4ce9573030457b4b9d1d73c0edd1fca,
         type: 2}
@@ -821,6 +811,10 @@ Prefab:
         type: 2}
       propertyPath: m_SizeDelta.x
       value: 217.71
+      objectReference: {fileID: 0}
+    - target: {fileID: 1819315018296782, guid: e4ce9573030457b4b9d1d73c0edd1fca, type: 2}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e4ce9573030457b4b9d1d73c0edd1fca, type: 2}
@@ -890,8 +884,11 @@ Prefab:
       propertyPath: notEnoughCoinsText
       value: 
       objectReference: {fileID: 1414199238}
-    m_RemovedComponents:
-    - {fileID: 114188904093464664, guid: 3e0fc27b24a7c72449b86969eba74740, type: 2}
+    - target: {fileID: 1574813838324768, guid: 3e0fc27b24a7c72449b86969eba74740, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3e0fc27b24a7c72449b86969eba74740, type: 2}
   m_IsPrefabParent: 0
 --- !u!114 &1825834294 stripped

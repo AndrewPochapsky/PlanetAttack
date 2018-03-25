@@ -180,7 +180,7 @@ MonoBehaviour:
     prefab: {fileID: 1437140615854492, guid: 3a4cd006484ede447b38c6fc5e4ea99b, type: 2}
     size: 7
     parent: {fileID: 4596266854395724}
-  - tag: PistolDrop
-    prefab: {fileID: 1437140615854492, guid: 3a4cd006484ede447b38c6fc5e4ea99b, type: 2}
+  - tag: RifleDrop
+    prefab: {fileID: 1471258537452526, guid: 901703c81c52afc43a1d572415aff61c, type: 2}
     size: 7
-    parent: {fileID: 4596266854395724}
+    parent: {fileID: 4854280951219638}

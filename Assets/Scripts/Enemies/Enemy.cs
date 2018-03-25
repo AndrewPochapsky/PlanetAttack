@@ -125,12 +125,9 @@ public class Enemy : Entity, IPoolable {
         source.Play();
 
         Player.Instance.IncrementCoins(UnityEngine.Random.Range(data.MinCoins, data.MaxCoins + 1));
-        /*
-        for (int i = 0; i < NumOfXPOrbs; i++)
-        {
-            Vector3 offset = new Vector3(0, Random.Range(0,2), 0);
-            Instantiate(Resources.Load("Collectibles/XPOrbContainer"), transform.position+ offset, transform.rotation);
-        }*/
+        
+        //Call function which returns a string
+
         base.Die();
     }
 

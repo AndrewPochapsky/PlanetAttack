@@ -10,6 +10,8 @@ public class WeaponManager : MonoBehaviour {
 
 	public List<RangedWeapon> Weapons { get; private set; }
 
+    private string[] weaponDrops;
+
 	/// <summary>
 	/// Awake is called when the script instance is being loaded.
 	/// </summary>
@@ -50,6 +52,31 @@ public class WeaponManager : MonoBehaviour {
 			Weapons.Add(rangedWeapon);
 			
 		}
+        //have to subtract 1 since pistol is not part of drops
+        weaponDrops = new string[Weapons.Count - 1];
+
+        int weaponIndex = 0;
+        int dropIndex = 0;
+        while(weaponIndex < Weapons.Count)
+        {
+            RangedWeapon weapon = Weapons[weaponIndex];
+            if (weapon.GetType() == typeof(Pistol))
+            {
+                weaponIndex++;
+            }
+            else
+            {
+                weaponDrops[dropIndex] = weapon.GetType().Name;
+                weaponIndex++;
+                dropIndex++;
+            }
+        }
+       
+        for(int i = 0; i < weaponDrops.Length; i++)
+        {
+            print(weaponDrops[i]);
+        }
+       
 	}
 
 	public RangedWeapon GetWeapon(string tag)
@@ -66,5 +93,18 @@ public class WeaponManager : MonoBehaviour {
 		}
 		return null;
 	}
+
+    public string GetWeaponDrop()
+    {
+        float value = Random.Range(0, 1);
+
+        if(value > 0.5f)
+        {
+            int index = Random.Range(0, weaponDrops.Length);
+            return weaponDrops[index];
+        }
+        
+        return "";
+    }
 
 }
