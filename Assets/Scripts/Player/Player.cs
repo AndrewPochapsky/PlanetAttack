@@ -56,8 +56,6 @@ public class Player : Entity {
     {
         OnHealthUpdatedEvent(data.CurrentHealth, data.MaxHealth);
         OnCoinsUpdatedEvent(Coins);
-
-      
     }
 
     public override void RecieveDamage(int damage)
@@ -162,6 +160,8 @@ public class Player : Entity {
             }
             weapon.gameObject.SetActive(true);
             weapon.transform.SetParent(hand, false);
+
+            GetComponent<PlayerMovementController>().weapon = weapon.transform;
 
             weapon.CallAmmoEvent();
         }

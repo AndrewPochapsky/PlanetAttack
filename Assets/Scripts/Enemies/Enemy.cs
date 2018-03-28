@@ -125,8 +125,13 @@ public class Enemy : Entity, IPoolable {
         source.Play();
 
         Player.Instance.IncrementCoins(UnityEngine.Random.Range(data.MinCoins, data.MaxCoins + 1));
-        
+
         //Call function which returns a string
+        string weaponDrop = WeaponManager.Instance.GetWeaponDrop();
+        if(weaponDrop != null)
+        {
+            ObjectPooler.Instance.SpawnFromPool(weaponDrop, transform.position, transform.rotation);
+        }
 
         base.Die();
     }

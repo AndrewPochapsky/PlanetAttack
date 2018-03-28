@@ -19,7 +19,8 @@ public class PlayerMovementController : MonoBehaviour {
 
 	Player player;
     
-    Transform weapon;
+    [HideInInspector]
+    public Transform weapon;
     Rigidbody2D rb;
 
     float maxHoverFuel = 27f;
@@ -49,7 +50,6 @@ public class PlayerMovementController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        //print("Current Fuel: " + currentHoverFuel);
         print("Hover state: " + hoverState);
         Move();
         CheckIfReflectPlayer();

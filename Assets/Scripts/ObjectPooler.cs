@@ -82,8 +82,6 @@ public class ObjectPooler : MonoBehaviour {
 			return null;
 		}
 
-
-
 		GameObject objToSpawn = poolDictionary[tag].Dequeue();
 		objToSpawn.SetActive(true);
 		objToSpawn.transform.position = position;
@@ -96,10 +94,8 @@ public class ObjectPooler : MonoBehaviour {
 			pooledObject.OnObjectSpawn();
 		}
 
-
 		poolDictionary[tag].Enqueue(objToSpawn);
 
 		return objToSpawn;
 	}
-
 }

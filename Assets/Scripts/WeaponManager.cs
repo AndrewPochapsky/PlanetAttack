@@ -66,7 +66,7 @@ public class WeaponManager : MonoBehaviour {
             }
             else
             {
-                weaponDrops[dropIndex] = weapon.GetType().Name;
+                weaponDrops[dropIndex] = weapon.GetType().Name + "Drop";
                 weaponIndex++;
                 dropIndex++;
             }
@@ -76,7 +76,6 @@ public class WeaponManager : MonoBehaviour {
         {
             print(weaponDrops[i]);
         }
-       
 	}
 
 	public RangedWeapon GetWeapon(string tag)
@@ -96,15 +95,15 @@ public class WeaponManager : MonoBehaviour {
 
     public string GetWeaponDrop()
     {
-        float value = Random.Range(0, 1);
-
+        float value = Random.Range(0.0f, 1.0f);
+       
         if(value > 0.5f)
         {
             int index = Random.Range(0, weaponDrops.Length);
             return weaponDrops[index];
         }
         
-        return "";
+        return null;
     }
 
 }
