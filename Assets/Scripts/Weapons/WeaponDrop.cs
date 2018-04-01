@@ -12,6 +12,8 @@ public class WeaponDrop : MonoBehaviour,IInteractable {
     Vector3 originalPos;
     private void Start()
     {
+
+        //TODO: fix the bobbing such that it is not on the y plane since when the weapon drops on the side it bobs the wrong way
         originalPos = transform.position;
         float displacement = 0.1f;
         float duration = 0.15f;
@@ -22,6 +24,7 @@ public class WeaponDrop : MonoBehaviour,IInteractable {
             .Append(transform.DOMoveY(originalPos.y - displacement, duration))
             .Append(transform.DOMoveY(originalPos.y, duration));
         bobbingSequence.SetLoops(int.MaxValue);
+
         //bobbingSequence.SetEase(Ease.InSine);
 
     }
