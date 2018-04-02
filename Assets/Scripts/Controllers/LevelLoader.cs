@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class LevelManager : MonoBehaviour {
+public class LevelLoader : MonoBehaviour {
  
-    public static LevelManager Instance;
+    public static LevelLoader Instance;
 
     /// <summary>
     /// Awake is called when the script instance is being loaded.

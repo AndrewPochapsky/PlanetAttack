@@ -38,7 +38,7 @@ public class SpawnCamp : MonoBehaviour {
 
     private IEnumerator IncrementSpawnAmount()
     {
-        yield return new WaitForSeconds(DifficultyController.IncrementTime);
+        yield return new WaitForSeconds(0);//DifficultyController.IncrementTime);
        
         amountToSpawn++;
         print("incrementing amount, amount is now: " + amountToSpawn);

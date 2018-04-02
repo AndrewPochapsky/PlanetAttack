@@ -35,9 +35,6 @@ public class Player : Entity {
 
         base.Awake();
 
-        data.Level = 1;
-        data.CurrentXP = 0;
-        data.RequiredXP = 100 + (25 * (data.Level - 1));
         data.CurrentHealth = 12;
         data.MaxHealth = data.CurrentHealth;
         data.Speed = 5;
@@ -109,27 +106,8 @@ public class Player : Entity {
 
     protected override void Die()
     {
-        DifficultyController.SurvivedTime = Time.timeSinceLevelLoad.ToString("F2");
-        LevelManager.Instance.LoadLevel("_02End");
+        LevelLoader.Instance.LoadLevel("_02End");
         base.Die();
-    }
-    protected override void LevelUp()
-    {
-        base.LevelUp();
-        audioSource.clip = levelUpClip;
-        audioSource.Play();
-        //StartCoroutine(controller.DisplayLevelUpText());
-
-    }
-
-    protected override void SetStats()
-    {
-        data.RequiredXP = 100 + (65 * (data.Level - 1));
-        data.MaxHealth = 12 + (3 * (data.Level - 1));
-        data.Speed = 5 + (0.75f * (data.Level - 1));
-        //Damage = 2 + (1 * (Level - 1));
-        //weapon.Attacks[0].Damage = (weapon.Attacks[0].Damage + (1 * (Level - 1)));
-        data.CurrentHealth = data.MaxHealth;
     }
 
     public void IncrementCoins(int value)

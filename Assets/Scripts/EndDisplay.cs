@@ -9,7 +9,7 @@ public class EndDisplay : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        congratsText.text = "Congratulations! You survived for " + DifficultyController.SurvivedTime + " seconds";
+        //congratsText.text = "Congratulations! You survived for " + DifficultyController.SurvivedTime + " seconds";
     }
 	
 	// Update is called once per frame

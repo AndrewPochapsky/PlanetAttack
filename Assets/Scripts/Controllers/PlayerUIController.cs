@@ -8,11 +8,12 @@ using DG.Tweening;
 
 public class PlayerUIController : MonoBehaviour {
 
-    public TextMeshProUGUI healthText, coinsText, timeText, ammoText;
+    public TextMeshProUGUI healthText, coinsText, ammoText, scoreText;
 
     private void Awake()
     {
-        
+        LevelController.Instance.OnScoreUpdatedEvent += OnScoreUpdated;
+
         foreach (RangedWeapon weapon in WeaponManager.Instance.Weapons)
         {
             weapon.OnAmmoUpdatedEvent += OnAmmoUpdated;
@@ -23,12 +24,12 @@ public class PlayerUIController : MonoBehaviour {
     void Start () {
         Player.Instance.OnHealthUpdatedEvent += OnHealthUpdated;
         Player.Instance.OnCoinsUpdatedEvent += OnCoinsUpdated;
-
     }
 	
-	void Update () {
+    //TODO: re-enable if time gets added back in
+	/*void Update () {
         timeText.text = Time.timeSinceLevelLoad.ToString("F2");
-	}
+	}*/
 
     private void OnHealthUpdated(int current, int max)
     {
@@ -50,6 +51,11 @@ public class PlayerUIController : MonoBehaviour {
         {
             ammoText.text = current + "/" + max;
         }
+    }
+
+    private void OnScoreUpdated(int current, int required)
+    {
+        scoreText.text = current + "/" + required;
     }
 
 }
