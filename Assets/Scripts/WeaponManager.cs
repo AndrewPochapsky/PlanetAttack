@@ -72,10 +72,6 @@ public class WeaponManager : MonoBehaviour {
             }
         }
        
-        for(int i = 0; i < weaponDrops.Length; i++)
-        {
-            print(weaponDrops[i]);
-        }
 	}
 
 	public RangedWeapon GetWeapon(string tag)

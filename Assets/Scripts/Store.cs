@@ -40,11 +40,10 @@ public class Store : MonoBehaviour, IInteractable {
 		{
 			bool value = !storeWindow.gameObject.activeInHierarchy;
 			storeWindow.gameObject.SetActive(value);
-
 		}
     }
 
-	private void GenerateStoreOptions()
+    private void GenerateStoreOptions()
 	{
 		WeaponStatsSO statsSO = Resources.Load<WeaponStatsSO>("ScriptableObjects/WeaponStats");
 		

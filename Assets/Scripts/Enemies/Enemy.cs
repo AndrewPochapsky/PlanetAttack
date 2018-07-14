@@ -31,16 +31,12 @@ public class Enemy : Entity, IPoolable {
         base.Awake();
 
         audioSource = GetComponent<AudioSource>();
-        data.CurrentXP = DifficultyController.CurrentXP;
         levelText = canvas.transform.GetChild(0).GetComponent<Text>();
     }
 	
-    protected override void Update()
+    protected virtual void Update()
     {
-        base.Update();
-
-        HandleStates();
-        
+        HandleStates();   
     }
 
     //Reset everything
@@ -125,6 +121,7 @@ public class Enemy : Entity, IPoolable {
         source.Play();
 
         Player.Instance.IncrementCoins(UnityEngine.Random.Range(data.MinCoins, data.MaxCoins + 1));
+        LevelController.Instance.IncrementScore(data.ScoreValue);
 
         //Call function which returns a string
         string weaponDrop = WeaponManager.Instance.GetWeaponDrop();
@@ -134,11 +131,6 @@ public class Enemy : Entity, IPoolable {
         }
 
         base.Die();
-    }
-
-    private void IncrementXP()
-    {
-        AddXP(DifficultyController.XPRate);
     }
 
     public override void RecieveDamage(int damage)
