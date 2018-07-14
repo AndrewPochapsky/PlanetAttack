@@ -1,214 +1,136 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Enemy : LivingCreature {
-    protected Player player { get; set; }
-    protected int NumOfXPOrbs { get; set; }
-    protected List<Transform> waypoints;
-
+//TODO: add functionality such that the enemy rotates when hit from behind
+public class Enemy : Entity, IPoolable {
     
+    public enum EnemyType { Slime }
+    public enum State { Moving, Attacking }
+
+    private State state;
+
+    protected int NumOfXPOrbs { get; set; }
+
+    protected List<Transform> waypoints;
 
     public AudioClip hitClip, dieClip;
     private AudioSource audioSource;
 
-
-    protected float HealthModifier { get; set; }
-    protected float DamageModifier { get; set; }
-    protected float SpeedModifier { get; set; }
-
     private Text levelText;
 
-    private int count = 0;
+    //Transform nearestWaypoint;
+    //Vector2 initialDirection;
+    Vector2 currentDirection;
 
-    Transform nearestWaypoint;
-    Vector2 moveDirection;
-
-    private void Awake()
-    {
-       
-    }
 
     // Use this for initialization
-    protected override void Start () {
+    protected override void Awake () {
+        base.Awake();
+
         audioSource = GetComponent<AudioSource>();
-        CurrentXP = DifficultyController.GetCurrentXP();
-
-        
-        
-
-        waypoints = new List<Transform>();
-        GameObject[] wayPointObjects= GameObject.FindGameObjectsWithTag("Waypoint");
-        foreach(GameObject obj in wayPointObjects)
-        {
-            Transform wp = obj.transform;
-            waypoints.Add(wp);
-        }
-        //print(waypoints.Count);
-        InvokeRepeating("IncrementXP", 0, 1);
-        
-        nearestWaypoint = closestWaypoint();
-        //print(nearestWaypoint.ToString());
-        moveDirection = ChooseMoveDirection();
-        base.Start();
         levelText = canvas.transform.GetChild(0).GetComponent<Text>();
     }
 	
-    protected override void Update()
+    protected virtual void Update()
     {
-        transform.Translate(moveDirection* Speed * Time.deltaTime);
-
-        levelText.text = Level.ToString();
-        //print("Enemy xp: " + CurrentXP);
-        
-        //IncrementXP();
-        base.Update();
-        
+        HandleStates();   
     }
-	
-	
 
-    private void OnCollisionStay2D(Collision2D collision)
+    //Reset everything
+    public virtual void OnObjectSpawn()
     {
-       
-        if (collision.gameObject.tag=="Player" && collision.gameObject.tag!="Weapon")
+        data.CurrentHealth = data.MaxHealth;
+        currentDirection = GetInitialDirection();
+        state = State.Moving;
+    }
+
+    //Super ghetto implementation of state pattern
+    //Idealy should use a class for each state: 
+    //http://www.gameprogrammingpatterns.com/state.html
+    private void HandleStates()
+    {
+        switch (state)
+        {
+            case State.Moving:
+                transform.Translate(currentDirection * data.Speed * Time.deltaTime);
+                break;
+
+            case State.Attacking:
+                break;
+        }
+    }
+
+    /// <summary>
+    /// Sent when another object enters a trigger collider attached to this
+    /// object (2D physics only).
+    /// </summary>
+    /// <param name="other">The other Collider2D involved in this collision.</param>
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        Projectile projectile = other.GetComponent<Projectile>();
+        if(projectile != null)
+        {
+            RecieveDamage(projectile.Damage);
+            projectile.gameObject.SetActive(false);
+
+            if(CheckIfRotate(projectile))
+            {
+                Rotate();
+            }
+        }
+    }
+
+    //TOOD: rotate sprites and whatever ever else has to as well
+    protected void Rotate()
+    {
+        currentDirection = -currentDirection;
+    }
+
+    /// <summary>
+    /// Used to determine if the enemy should change direction when hit with projectile
+    /// </summary>
+    /// <param name="projectile">The fired projectile</param>
+    /// <returns> Return true when enemy and player are facing same direction</returns>
+    protected virtual bool CheckIfRotate(Projectile projectile)
+    {
+        return (projectile.Direction == PlayerMovementController.Direction.LEFT && currentDirection == Vector2.left) 
+            || (projectile.Direction == PlayerMovementController.Direction.RIGHT && currentDirection == Vector2.right);
+    }
+
+    private void OnCollisionStay2D(Collision2D col)
+    {
+        Player player = col.gameObject.GetComponent<Player>();
+        if (player != null)
         {
             if (!player.IsInvulnerable())
             {
-                print(collision.gameObject.ToString() + " taking damage");
-                player.RecieveDamage(Damage);
+                print(col.gameObject.ToString() + " taking damage");
+                player.RecieveDamage(data.Damage);
             }
            
         }
     }
 
-    //TODO make more acurrate
-    private Vector2 ChooseMoveDirection()
-    {
-
-        print("reached destination");
-        if (transform.position.x < nearestWaypoint.position.x && transform.position.y < 0f)//
-        {
-            print("1");
-            //transform.Translate(Vector2.left * Speed * Time.deltaTime);
-            return Vector2.left;
-            
-        }
-        
-        else if (transform.position.x < nearestWaypoint.position.x && transform.position.y > 0)
-        {
-            print("2");
-            //transform.Translate(Vector2.right * Speed * Time.deltaTime);
-            return Vector2.right;
-        }
-       
-
-        else if (transform.position.x > nearestWaypoint.position.x && transform.position.y > 0f)
-        {
-            print("3");
-            //transform.Translate(Vector2.left * Speed * Time.deltaTime);
-            return Vector2.left;
-            
-        }
-       
-        else if (transform.position.x > nearestWaypoint.position.x && transform.position.y < 0)//
-        {
-            print("4");
-            //transform.Translate(Vector2.right * Speed * Time.deltaTime);
-            return Vector2.right;
-        }
-        
-        print("rip");
-        return Vector2.zero;
-
-
-
-
-    }
-
-    private Transform closestWaypoint()
-    {
-        //Transform[] closestWaypoints = new Transform[2];
-        Transform closestWaypoint = null;
-        
-        Transform secondClosestWaypoint = null;
-        float distance;
-        float shortestDistance=9999;
-
-
-        foreach(Transform wp in waypoints)
-        {
-            distance = Vector3.Distance(wp.position, transform.position);
-            if (Mathf.Round(wp.position.x) != Mathf.Round(transform.position.x))
-            {
-                if (distance < shortestDistance)
-                {
-                    shortestDistance = distance;
-
-                    closestWaypoint = wp;
-                }
-            }
-            
-        }
-        shortestDistance = 9999;
-        foreach(Transform wp in waypoints)
-        {
-
-            if (closestWaypoint != null)
-            {
-                if (wp.position != closestWaypoint.position && Mathf.Round(wp.position.x) != Mathf.Round(transform.position.x))
-                {
-                    distance = Vector3.Distance(wp.position, transform.position);
-                    if (distance < shortestDistance)
-                    {
-                        shortestDistance = distance;
-                        secondClosestWaypoint = wp;
-                    }
-                }
-            }
-           
-           
-        }
-
-        //print("First closest "+closestWaypoint.ToString());
-        //print("Second closest"+ secondClosestWaypoint.ToString());
-        if (closestWaypoint != null)
-        {
-            float firstDistance = Vector2.Distance(closestWaypoint.position, player.transform.position);
-            float secondDistance = Vector2.Distance(secondClosestWaypoint.position, player.transform.position);
-            if (firstDistance > secondDistance)
-            {
-                return secondClosestWaypoint;
-            }
-            else
-            {
-                return closestWaypoint;
-            }
-        }
-        else
-        {
-            return null;
-        }
-       
-
-    
-    }
     protected override void Die()
     {
-        audioSource.clip = dieClip;
-        audioSource.Play();
-        for (int i = 0; i < NumOfXPOrbs; i++)
-        {
-            Vector3 offset = new Vector3(0, Random.Range(0,2), 0);
-            Instantiate(Resources.Load("Collectibles/XPOrbContainer"), transform.position+ offset, transform.rotation);
-        }
-        base.Die();
-    }
+        AudioSource source = ObjectPooler.Instance.SpawnFromPool(nameof(AudioSource), transform.position, transform.rotation).GetComponent<AudioSource>();
+        source.clip = dieClip;
+        source.Play();
 
-    private void IncrementXP()
-    {
-        AddXP(DifficultyController.GetRate());
+        Player.Instance.IncrementCoins(UnityEngine.Random.Range(data.MinCoins, data.MaxCoins + 1));
+        LevelController.Instance.IncrementScore(data.ScoreValue);
+
+        //Call function which returns a string
+        string weaponDrop = WeaponManager.Instance.GetWeaponDrop();
+        if(weaponDrop != null)
+        {
+            ObjectPooler.Instance.SpawnFromPool(weaponDrop, transform.position, transform.rotation);
+        }
+
+        base.Die();
     }
 
     public override void RecieveDamage(int damage)
@@ -217,7 +139,19 @@ public class Enemy : LivingCreature {
         audioSource.Play();
         base.RecieveDamage(damage);
     }
-    
+
+    private Vector2 GetInitialDirection()
+    {
+        int num = UnityEngine.Random.Range(0, 2);
+        if(num == 0)
+        {
+            return Vector2.right;
+        }
+        else
+        {
+            return Vector2.left;
+        }
+    }
 }
     
 

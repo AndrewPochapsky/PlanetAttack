@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1265820e65ea6341bb15c31fc977ecd, type: 3}
+  m_Name: WeaponStats
+  m_EditorClassIdentifier: 
+  stats:
+  - name: Pistol
+    damage: 3
+    knockBack: 0
+    fireSpeed: 20
+    fireRate: 0.5
+    maxAmmo: -1
+    upgradeLevel: 1
+    baseUpgradeCost: 100
+    upgradeIncrement: 125
+    currentUpgradeCost: 0
+    currentAmmo: 10000
+  - name: Rifle
+    damage: 2
+    knockBack: 0
+    fireSpeed: 20
+    fireRate: 0.3
+    maxAmmo: 250
+    upgradeLevel: 1
+    baseUpgradeCost: 150
+    upgradeIncrement: 200
+    currentUpgradeCost: 0
+    currentAmmo: 10000

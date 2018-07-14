@@ -2,115 +2,68 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : LivingCreature {
+public class Player : Entity {
 
-    private PlayerUIController controller;
+    public delegate void OnHealthUpdated(int curr, int max);
+    public event OnHealthUpdated OnHealthUpdatedEvent;
+
+    public delegate void OnCoinsUpdated(int value);
+    public event OnCoinsUpdated OnCoinsUpdatedEvent;
+
+    public int Coins { get; protected set; }
 
     public AudioClip levelUpClip, hitClip;
-    //
+    
     private AudioSource audioSource;
-
-    private LevelManager levelManager;
-
-    private Attack lastAttackUsed;
-    private Vector3 RotationVector;
-    private bool rotationSet = false;
-
-    private float rotation;
-
-    public Transform hand;
-    private Weapon weapon;
 
     private float invulnerabilityTimer = 0.5f;
     private bool invulnerable = false;
+    public Transform hand;
+
+    public static Player Instance;
     
-    private void Awake()
+    protected override void Awake()
     {
-        Level = 1;
-        CurrentXP = 0;
-        RequiredXP = 100 + (25 * (Level - 1));
-        CurrentHealth = 12;
-        MaxHealth = CurrentHealth;
-        Speed = 5;
-        JumpStrength = 15;
-        RB = GetComponent<Rigidbody2D>();
-        DG = transform.GetChild(0).GetComponent<DetectGround>();
-        //hand = transform.GetChild(0);
-        weapon = hand.GetChild(0).GetComponent<Weapon>();
-        //Physics2D.gravity = Vector2.zero;
-    }
+        if(Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            Instance = this;
+        }
 
-    // Use this for initialization
-    void Start () {
-        planet = GameObject.FindObjectOfType<Planet>();
-        RotationVector = hand.rotation.eulerAngles;
-        levelManager = GameObject.FindObjectOfType<LevelManager>();
-        audioSource = GetComponent<AudioSource>();
-        controller = GameObject.FindObjectOfType<PlayerUIController>();
+        base.Awake();
 
-    }
-	
-	// Update is called once per frame
-	protected override void Update () {
-        base.Update();
+        data.CurrentHealth = 12;
+        data.MaxHealth = data.CurrentHealth;
+        data.Speed = 5;
+        data.JumpStrength = 15;
         
-        //weapon.transform.rotation = Quaternion.Euler(transform.rotation.x, rotation, transform.rotation.z);
-        //SetZRotation(hand);
-        //hand.transform.rotation = transform.rotation;
-        Move();
-	}
-    public Attack GetLastAttack()
-    {
-        return lastAttackUsed;
+        audioSource = GetComponent<AudioSource>();
+
+        EquipWeapon(nameof(Pistol));
     }
 
-    private void FixedUpdate()
+    /// <summary>
+    /// Start is called on the frame when a script is enabled just before
+    /// any of the Update methods is called the first time.
+    /// </summary>
+    void Start()
     {
-        InduceGravity();
-    }
-
-    protected override void Move()
-    {
-        if (Input.GetKey(KeyCode.LeftArrow))
-        {
-            rotation = 180;
-            transform.Translate(Vector2.left * Speed * Time.deltaTime);
-
-
-        }
-        if (Input.GetKey(KeyCode.RightArrow))
-        {
-            rotation = 0;
-            transform.Translate(Vector2.right * Speed * Time.deltaTime);
-
-        }
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            Attack attack = weapon.Attacks[0];
-            Attack(attack,"left");
-        }
-        else if (Input.GetKeyDown(KeyCode.D))
-        {
-            Attack attack = weapon.Attacks[0];
-            Attack(attack,"right");
-        }
-
-
-
-    }
-
-    private void Attack(Attack attack, string suffix)
-    {
-        weapon.anim.SetTrigger(attack.GetName()+suffix);
-        lastAttackUsed = attack;
+        OnHealthUpdatedEvent(data.CurrentHealth, data.MaxHealth);
+        OnCoinsUpdatedEvent(Coins);
     }
 
     public override void RecieveDamage(int damage)
     {
+        base.RecieveDamage(damage);
+
+        OnHealthUpdatedEvent(data.CurrentHealth, data.MaxHealth);
+
         audioSource.clip = hitClip;
         audioSource.Play();
 
-        base.RecieveDamage(damage);
         StartCoroutine(BecomeInvulerable());
     }
 
@@ -125,10 +78,15 @@ public class Player : LivingCreature {
         return invulnerable;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerStay2D(Collider2D collision)
     {
-        Collectible collectible = collision.GetComponent<Collectible>();
-        if (collectible && !GetComponent<Weapon>())
+        //Collectible collectible = collision.GetComponent<Collectible>();
+        IInteractable interactable = collision.GetComponent<IInteractable>();
+        if (interactable != null)
+        {
+            interactable.Interact();
+        }
+        /*if (collectible && !GetComponent<RangedWeapon>())
         {
             if(collectible is XPOrb)
             {
@@ -140,35 +98,54 @@ public class Player : LivingCreature {
             collectible.Destroy();
             //Destroy(collectible.gameObject);
             //... more conditions such as health pack
-        }
+        }*/
+       
     }
+
+
+
     protected override void Die()
     {
-        DifficultyController.SetSurvivedTime(Time.timeSinceLevelLoad.ToString("F2"));
-        levelManager.LoadLevel("02End");
+        LevelLoader.Instance.LoadLevel("_02End");
         base.Die();
     }
-    protected override void LevelUp()
-    {
-        base.LevelUp();
-        audioSource.clip = levelUpClip;
-        audioSource.Play();
-        StartCoroutine(controller.DisplayLevelUpText());
 
+    public void IncrementCoins(int value)
+    {
+        Coins += value;
+        OnCoinsUpdatedEvent(Coins);
     }
 
-    protected override void SetStats()
+    /// <summary>
+    /// Equips the weapon of 'name' by getting it from WeaponManager
+    /// </summary>
+    /// <param name="name">The weapon to equip</param>
+    public void EquipWeapon(string name)
     {
-        RequiredXP = 100 + (65 * (Level - 1));
-        MaxHealth = 12 + (3 * (Level - 1));
-        Speed = 5 + (0.75f * (Level - 1));
-        //Damage = 2 + (1 * (Level - 1));
-        weapon.Attacks[0].SetDamage(weapon.Attacks[0].GetDamage() + (1 * (Level - 1)));
-        CurrentHealth = MaxHealth;
-    }
+        RangedWeapon weapon = WeaponManager.Instance.GetWeapon(name);
+        if(weapon != null)
+        {
+            GameObject currentWeapon = null;
+            if(hand.transform.childCount > 0)
+            {
+                currentWeapon = hand.GetChild(0).gameObject;
+            }
 
-    public void SetInvulnerable(bool value)
-    {
-        invulnerable = value;
-    }
+            if(currentWeapon != null)
+            {
+                currentWeapon.transform.SetParent(WeaponManager.Instance.transform, false);
+                currentWeapon.SetActive(false);
+            }
+            weapon.gameObject.SetActive(true);
+            weapon.transform.SetParent(hand, false);
+
+            GetComponent<PlayerMovementController>().weapon = weapon.transform;
+
+            weapon.CallAmmoEvent();
+        }
+        else
+        {
+            Debug.LogWarning("Weapon: " + name + " can not be found");//
+        }
+    }    
 }

@@ -3,44 +3,42 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class SpawnCamp : MonoBehaviour {
+
     [SerializeField]
-    private Enemy[] enemyTypes;
+    private Enemy.EnemyType[] enemyTypes;
+
     [SerializeField]
     private int amountToSpawn;
+    
     [SerializeField][Tooltip("Spawn every x amount of seconds")]
     private float spawnSpeed;
+
     private float timeBetweenSpawns = 6;
+
 	// Use this for initialization
 	void Start () {
         StartCoroutine(SpawnEnemies());
-        StartCoroutine(IncrementSpawnAmount());
-        //InvokeRepeating("SpawnEnemies", 0, 10);
-	}
-	
-	// Update is called once per frame
-	void Update () {
-        
+        //StartCoroutine(IncrementSpawnAmount());
 	}
 
     private IEnumerator SpawnEnemies()
     {
         int randomEnemyIndex = Random.Range(0, enemyTypes.Length);
-        Enemy enemyToSpawn = enemyTypes[randomEnemyIndex];
+        Enemy.EnemyType enemyToSpawn = enemyTypes[randomEnemyIndex];
 
         for (int i = 0; i < amountToSpawn; i++)
         {
-            
-            Instantiate(enemyToSpawn, transform.position, transform.rotation);
+            ObjectPooler.Instance.SpawnFromPool(enemyToSpawn.ToString(), transform.position, transform.rotation);
             yield return new WaitForSeconds(spawnSpeed);
         }
         print("SPAWNING");
         yield return new WaitForSeconds(timeBetweenSpawns);
-        StartCoroutine(SpawnEnemies());
+        //StartCoroutine(SpawnEnemies());
     }
 
     private IEnumerator IncrementSpawnAmount()
     {
-        yield return new WaitForSeconds(DifficultyController.GetIncrementTime());
+        yield return new WaitForSeconds(0);//DifficultyController.IncrementTime);
        
         amountToSpawn++;
         print("incrementing amount, amount is now: " + amountToSpawn);
